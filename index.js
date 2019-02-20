@@ -10,7 +10,7 @@ connection.connect();
  
 connection.query(
 `
-SELECT * FROM *
+SELECT * FROM *;
 `
 )  , function (error, results, fields) {
   if (error) throw error;

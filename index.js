@@ -9,13 +9,8 @@ var connection = mysql.createConnection({
 connection.connect();
  
 connection.query(
-  `CREATE TABLE Persons (
-    PersonID int,
-    LastName varchar(255),
-    FirstName varchar(255),
-    Address varchar(255),
-    City varchar(255) 
-);
+`
+SELECT * FROM *
 `
 )  , function (error, results, fields) {
   if (error) throw error;

@@ -11,14 +11,14 @@ connection.connect();
  
 connection.query(
 `
-CREATE TABLE BandContactInfo (
+CREATE TABLE IF NOT EXISTS BandContactInfo (
 ID int NOT NULL AUTO_INCREMENT,
 ContactRecordId int,
 CityName varchar(255),
 StateOrProvince varChar(255),
 PhoneNumber varChar(255),
-EmailAddress varChar(255)
-PRIMARY KEY(ID)
+EmailAddress varChar(255),
+PRIMARY KEY (ID)
 );
 `
 )  , function (error, results, fields) {

@@ -17,7 +17,7 @@ ContactRecordId int,
 CityName varchar(255),
 StateOrProvince varChar(255),
 PhoneNumber varChar(255),
-EmailAddress varhar(255)
+EmailAddress varChar(255)
 PRIMARY KEY(ID)
 );
 `

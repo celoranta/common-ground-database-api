@@ -11,7 +11,7 @@ connection.connect();
  
 connection.query(
 `
-CREATE TABLE IF NOT EXISTS BandContactInfo (
+CREATE TABLE BandContactInfo (
 ID int NOT NULL AUTO_INCREMENT,
 CityName varchar(255),
 StateOrProvince varChar(255),

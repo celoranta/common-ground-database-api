@@ -27,7 +27,8 @@ PRIMARY KEY (ID)
 
 connection.query(
   `
-  INSERT INTO BandContactInfo (
+  INSERT INTO BandContactInfo 
+  VALUES(
     "Vancouver",
     "BC",
     "+1 604-657-5677",

@@ -42,4 +42,4 @@ PRIMARY KEY (ID)
 //     console.log('The solution is: ', results[0].solution);
 //   };
  
-// connection.end();
+connection.end();

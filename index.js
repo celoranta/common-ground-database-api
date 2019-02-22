@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 //https://blog.cloudboost.io/how-to-make-an-oauth-2-server-with-node-js-a6db02dc2ce7
 
 var app = express();
-
+const port = process.env.PORT;
  /* set the bodyParser to parse the urlencoded post data */
  app.use(bodyParser.urlencoded({ extended: true }))
 

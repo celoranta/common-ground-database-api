@@ -5,7 +5,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   //Will need to change this to env variable soon
-  password : '$1G2lM4@',
+  password : process.env.MYSQL_PASSWORD,
   database : process.env.MYSQL_DATABASE
 });
  

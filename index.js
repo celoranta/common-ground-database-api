@@ -8,12 +8,12 @@ var bodyparser = require('body-parser');
 var app = express();
 
  /* set the bodyParser to parse the urlencoded post data */
- expressApp.use(bodyParser.urlencoded({ extended: true }))
+ app.use(bodyParser.urlencoded({ extended: true }))
 
  //MARK: --------------- INITIALISE THE SERVER
 
 //init the server
-expressApp.listen(port, () => {
+app.listen(port, () => {
 
   console.log(`listening on port ${port}`)
 })

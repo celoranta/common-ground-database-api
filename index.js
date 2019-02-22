@@ -1,10 +1,26 @@
 var mysql = require('mysql');
 var env = require('dotenv').config();
+var express = require('express');
+var bodyparser = require('body-parser');
+
+//https://blog.cloudboost.io/how-to-make-an-oauth-2-server-with-node-js-a6db02dc2ce7
+
+var app = express();
+
+ /* set the bodyParser to parse the urlencoded post data */
+ expressApp.use(bodyParser.urlencoded({ extended: true }))
+
+ //MARK: --------------- INITIALISE THE SERVER
+
+//init the server
+expressApp.listen(port, () => {
+
+  console.log(`listening on port ${port}`)
+})
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-
+  host     : process.env.HOST,
+  user     : process.env.DB_USER,
   password : process.env.MYSQL_PASSWORD,
   database : process.env.MYSQL_DATABASE
 });

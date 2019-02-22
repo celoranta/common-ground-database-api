@@ -1,6 +1,5 @@
 var mysql = require('mysql');
-var env = require('dotenv');
-env.config();
+var env = require('dotenv').config();
 
 var connection = mysql.createConnection({
   host     : 'localhost',

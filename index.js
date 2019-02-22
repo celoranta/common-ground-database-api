@@ -5,8 +5,8 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   //Will need to change this to env variable soon
-  password : process.env.MYSQL_PASSWORD,
-  database : process.env.MYSQL_DATABASE
+  password : process.env.$MYSQL_PASSWORD,
+  database : process.env.$MYSQL_DATABASE
 });
  
 connection.connect();

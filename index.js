@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
   user     : 'root',
   //Will need to change this to env variable soon
   password : '$1G2lM4@',
-  database : 'commonground'
+  database : process.env.$MYSQL_DATABASE
 });
  
 connection.connect();

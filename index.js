@@ -27,12 +27,12 @@ PRIMARY KEY (ID)
 
 connection.query(
   `
-  INSERT INTO BandContactInfo 
+  INSERT INTO BandContactInfo (CityName, StateOrProvince, PhoneNumber, EmailAddress)
   VALUES(
-    "Vancouver",
-    "BC",
-    "+1 604-657-5677",
-    "info@commongroundband.ca"
+    'Vancouver',
+    'BC',
+    '+1 604-657-5677',
+    'info@commongroundband.ca'
    );
   `
   )  , function (error, results, fields) {

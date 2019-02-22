@@ -4,7 +4,7 @@ var env = require('dotenv');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  //Will need to change this to env variable soon
+
   password : process.env.MYSQL_PASSWORD,
   database : process.env.MYSQL_DATABASE
 });
@@ -27,19 +27,19 @@ PRIMARY KEY (ID)
   console.log('The solution is: ', results[0].solution);
 };
 
-connection.query(
-  `
-  INSERT INTO BandContactInfo (CityName, StateOrProvince, PhoneNumber, EmailAddress)
-  VALUES(
-    'Vancouver',
-    'BC',
-    '+1 604-657-5677',
-    'info@commongroundband.ca'
-   );
-  `
-  )  , function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-  };
+// connection.query(
+//   `
+//   INSERT INTO BandContactInfo (CityName, StateOrProvince, PhoneNumber, EmailAddress)
+//   VALUES(
+//     'Vancouver',
+//     'BC',
+//     '+1 604-657-5677',
+//     'info@commongroundband.ca'
+//    );
+//   `
+//   )  , function (error, results, fields) {
+//     if (error) throw error;
+//     console.log('The solution is: ', results[0].solution);
+//   };
  
-connection.end();
+// connection.end();

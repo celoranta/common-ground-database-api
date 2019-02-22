@@ -12,5 +12,9 @@
     "dotenv": "^6.2.0",
     "env": "0.0.2",
     "sql-template-strings": "^2.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/celoranta/common-ground-database-api.git"
   }
 }

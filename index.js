@@ -25,21 +25,18 @@ PRIMARY KEY (ID)
   console.log('The solution is: ', results[0].solution);
 };
 
-// connection.query(
-//   `
-//   INSERT INTO BandContactInfo (
-//   ID int NOT NULL AUTO_INCREMENT,
-//   ContactRecordId int,
-//   CityName varchar(255),
-//   StateOrProvince varChar(255),
-//   PhoneNumber varChar(255),
-//   EmailAddress varChar(255),
-//   PRIMARY KEY (ID)
-//   );
-//   `
-//   )  , function (error, results, fields) {
-//     if (error) throw error;
-//     console.log('The solution is: ', results[0].solution);
-//   };
+connection.query(
+  `
+  INSERT INTO BandContactInfo (
+    "Vancouver",
+    "BC",
+    "+1 604-657-5677",
+    "info@commongroundband.ca"
+   );
+  `
+  )  , function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+  };
  
 connection.end();

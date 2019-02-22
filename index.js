@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 var env = require('dotenv').config();
 var express = require('express');
-var bodyparser = require('body-parser');
+var bodyParser = require('body-parser');
 
 //https://blog.cloudboost.io/how-to-make-an-oauth-2-server-with-node-js-a6db02dc2ce7
 

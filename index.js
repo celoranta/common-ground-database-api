@@ -10,8 +10,13 @@ const port = process.env.PORT;
  /* set the bodyParser to parse the urlencoded post data */
  app.use(bodyParser.urlencoded({ extended: true }))
 
-
- 
+//Test Database
+ var connection = mysql.createConnection({
+  host     : process.env.HOST,
+  user     : process.env.DB_USER,
+  password : process.env.MYSQL_PASSWORD,
+  database : process.env.MYSQL_DATABASE
+});
 connection.connect();
  
 connection.query(
@@ -56,9 +61,3 @@ app.listen(port, () => {
   console.log(`listening on port ${port}`)
 })
 
-var connection = mysql.createConnection({
-  host     : process.env.HOST,
-  user     : process.env.DB_USER,
-  password : process.env.MYSQL_PASSWORD,
-  database : process.env.MYSQL_DATABASE
-});

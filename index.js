@@ -110,22 +110,22 @@ PRIMARY KEY (ClearanceID)
 };
 
 connection.query(
-  `
-  CREATE TABLE IF NOT EXISTS Memberships (
-  Membership ID Int NOT NULL AUTO_INCREMENT,
-  PersonID Int NOT NULL,
-  ActID Int NOT NULL,
-  ClearanceID Int NOT NULL,
-  CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (MembershipID),
-  FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
-  FOREIGN KEY (ActID) REFERENCES Acts(ActID),
-  FOREIGN KEY (ClearanceID) REFERENCES Clearances(ClearanceID)
-  );
-  `
-  )  , function (error, results, fields) {
-    if (error) throw error;
-  };
+`
+CREATE TABLE IF NOT EXISTS Memberships (
+MembershipID Int NOT NULL AUTO_INCREMENT,
+PersonID Int NOT NULL,
+ActID Int NOT NULL,
+ClearanceID Int NOT NULL,
+CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (MembershipID),
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
+FOREIGN KEY (ActID) REFERENCES Acts(ActID),
+FOREIGN KEY (ClearanceID) REFERENCES Clearances(ClearanceID)
+);
+`
+)  , function (error, results, fields) {
+  if (error) throw error;
+};
 
 connection.query(
 `

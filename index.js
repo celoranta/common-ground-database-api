@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS PersonNames (
 PersonNameID int NOT NULL AUTO_INCREMENT,
 CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PersonNameType varchar(255) NOT NULL,
-PersonNameString varch(255) NOT NULL,
+PersonNameString varchar(255) NOT NULL,
 PersonID Int NOT NULL,
 PRIMARY KEY (PersonNameID),
 FOREIGN KEY (PersonNameTypeId) REFERENCES PersonNameTypes(PersonNameTypeId),

@@ -63,7 +63,7 @@ PersonNameType varchar(255) NOT NULL,
 PersonNameString varchar(255) NOT NULL,
 PersonID Int NOT NULL,
 PRIMARY KEY (PersonNameID),
-FOREIGN KEY (PersonNameTypeId) REFERENCES PersonNameTypes(PersonNameTypeId),
+FOREIGN KEY (PersonNameTypeId) REFERENCES PersonNameTypes(PersonNameTypeID),
 FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
 `

@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS Acts (
 ActID Int NOT NULL AUTO_INCREMENT,
 ActName varchar(255),
 CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-PRIMARY KEY (ActID),
+PRIMARY KEY (ActID)
 );
 `
 )  , function (error, results, fields) {
@@ -102,7 +102,7 @@ connection.query(
   ClearanceID Int NOT NULL AUTO_INCREMENT,
   ClearanceName varchar(255),
   CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (ClearanceID),
+  PRIMARY KEY (ClearanceID)
   );
   `
   )  , function (error, results, fields) {

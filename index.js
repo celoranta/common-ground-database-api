@@ -27,30 +27,49 @@ connection.query(
     if (error) throw error;
   };
 
-  connection.query(
-    `
-    CREATE TABLE IF NOT EXISTS PersonNameTypes (
-    PersonNameID int NOT NULL AUTO_INCREMENT,
-    NameType varchar(255) NOT NULL
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (PersonNameID)
-    );
-    `
-    )  , function (error, results, fields) {
-      if (error) throw error;
-    };
+connection.query(
+  `
+  CREATE TABLE IF NOT EXISTS PersonNameTypes (
+  PersonNameTypeID int NOT NULL AUTO_INCREMENT,
+  NameType varchar(255) NOT NULL,
+  CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (PersonNameTypeID)
+  );
+  `
+  )  , function (error, results, fields) {
+    if (error) throw error;
+  };
 
-    connection.query(
-      `
-      CREATE TABLE IF NOT EXISTS Persons (
-      PersonID int NOT NULL AUTO_INCREMENT,
-      CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (PersonID)
-      );
-      `
-      )  , function (error, results, fields) {
-        if (error) throw error;
-      };
+
+
+connection.query(
+  `
+  CREATE TABLE IF NOT EXISTS Persons (
+  PersonID int NOT NULL AUTO_INCREMENT,
+  CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (PersonID)
+  );
+  `
+  )  , function (error, results, fields) {
+    if (error) throw error;
+  };
+
+connection.query(
+`
+CREATE TABLE IF NOT EXISTS PersonNames (
+PersonNameID int NOT NULL AUTO_INCREMENT,
+CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PersonNameType varchar(255) NOT NULL,
+PersonNameString varch(255) NOT NULL,
+PersonID Int NOT NULL,
+PRIMARY KEY (PersonNameID),
+FOREIGN KEY (PersonNameTypeId) REFERENCES PersonNameTypes(PersonNameTypeId),
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+`
+)  , function (error, results, fields) {
+  if (error) throw error;
+};
  
 connection.query(
 `

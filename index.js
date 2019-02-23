@@ -59,7 +59,7 @@ connection.query(
 CREATE TABLE IF NOT EXISTS PersonNames (
 PersonNameID int NOT NULL AUTO_INCREMENT,
 CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-PersonNameType varchar(255) NOT NULL,
+PersonNameType Int NOT NULL,
 PersonNameString varchar(255) NOT NULL,
 PersonID Int NOT NULL,
 PRIMARY KEY (PersonNameID),

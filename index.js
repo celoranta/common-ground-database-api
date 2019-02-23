@@ -40,8 +40,6 @@ connection.query(
     if (error) throw error;
   };
 
-
-
 connection.query(
   `
   CREATE TABLE IF NOT EXISTS Persons (
@@ -70,7 +68,47 @@ FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 )  , function (error, results, fields) {
   if (error) throw error;
 };
- 
+
+connection.query(
+`
+CREATE TABLE IF NOT EXISTS EmailAddresses (
+EmailAddressID Int NOT NULL AUTO_INCREMENT,
+PersonID Int NOT NULL,
+CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (EmailAddressID),
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+`
+)  , function (error, results, fields) {
+  if (error) throw error;
+};
+
+connection.query(
+`
+CREATE TABLE IF NOT EXISTS Acts (
+ActID Int NOT NULL AUTO_INCREMENT,
+ActName varchar(255),
+CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (ActID),
+);
+`
+)  , function (error, results, fields) {
+  if (error) throw error;
+};
+
+connection.query(
+  `
+  CREATE TABLE IF NOT EXISTS Clearances (
+  ClearanceID Int NOT NULL AUTO_INCREMENT,
+  ClearanceName varchar(255),
+  CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (ClearanceID),
+  );
+  `
+  )  , function (error, results, fields) {
+    if (error) throw error;
+  };
+
 connection.query(
 `
 CREATE TABLE IF NOT EXISTS BandContactInfo (

@@ -18,6 +18,39 @@ const port = process.env.PORT;
   database : process.env.MYSQL_DATABASE
 });
 connection.connect();
+
+connection.query(
+  `
+  CREATE DATABASE IF NOT EXISTS commonground;
+  `
+  )  , function (error, results, fields) {
+    if (error) throw error;
+  };
+
+  connection.query(
+    `
+    CREATE TABLE IF NOT EXISTS PersonNameTypes (
+    PersonNameID int NOT NULL AUTO_INCREMENT,
+    NameType varchar(255) NOT NULL
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (PersonNameID)
+    );
+    `
+    )  , function (error, results, fields) {
+      if (error) throw error;
+    };
+
+    connection.query(
+      `
+      CREATE TABLE IF NOT EXISTS Persons (
+      PersonID int NOT NULL AUTO_INCREMENT,
+      CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (PersonID)
+      );
+      `
+      )  , function (error, results, fields) {
+        if (error) throw error;
+      };
  
 connection.query(
 `
@@ -32,7 +65,6 @@ PRIMARY KEY (ID)
 `
 )  , function (error, results, fields) {
   if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
 };
 
 // connection.query(

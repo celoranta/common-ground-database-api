@@ -165,7 +165,7 @@ connection.end();
 //init the server
 app.get('/', (req, res) => {
   
-  res.send('Received a GET message');
+  return res.send('Received a GET message');
 });
 
 app.listen(port, () => {

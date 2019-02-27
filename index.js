@@ -193,8 +193,7 @@ app.get('/persons', (req, res) => {
   connection.connect();
    connection.query(
     `
-    SELECT * FROM Persons (
-    );
+    SELECT * FROM Persons;
     `
     )  , function (error, results, fields) {
       if (error) throw error;

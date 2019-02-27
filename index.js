@@ -184,7 +184,7 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/persons', (req, res) => {
-  return await connection.query(
+  return connection.query(
     `
     SELECT * FROM Persons (
     );

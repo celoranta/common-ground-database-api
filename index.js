@@ -183,18 +183,17 @@ app.delete('/', (req, res) => {
   return res.send('Received a DELETE message');
 });
 
-// app.get('/persons', (req, res) => {
-//   return connection.query(
-//     `
-//     SELECT * FROM Persons (
-//     );
-//     `
-//     )  , function (error, results, fields) {
-//       if (error) throw error;
-
-//     };
-//   connection.end();
-// });
+app.get('/persons', (req, res) => {
+   connection.query(
+    `
+    SELECT * FROM Persons (
+    );
+    `
+    )  , function (error, results, fields) {
+      if (error) throw error;
+      console.log(res)
+    };
+});
 
 app.listen(port, () => {
 

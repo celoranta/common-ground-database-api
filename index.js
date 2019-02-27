@@ -3,7 +3,6 @@ var env = require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
 
-//https://blog.cloudboost.io/how-to-make-an-oauth-2-server-with-node-js-a6db02dc2ce7
 
 var app = express();
 const port = process.env.PORT;
@@ -73,6 +72,7 @@ connection.query(
 `
 CREATE TABLE IF NOT EXISTS EmailAddresses (
 EmailAddressID Int NOT NULL AUTO_INCREMENT,
+EmailAddress varchar(255),
 PersonID Int NOT NULL,
 CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (EmailAddressID),
@@ -163,6 +163,10 @@ connection.end();
  //MARK: --------------- INITIALISE THE SERVER
 
 //init the server
+app.get('/get', (req, res) => {
+  res.send('hello, world!');
+});
+
 app.listen(port, () => {
 
   console.log(`listening on port ${port}`)

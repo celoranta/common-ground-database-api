@@ -193,6 +193,7 @@ app.get('/persons', (req, res) => {
       if (error) throw error;
     };
   //return res.send('Received a GET message');
+  connection.end();
 });
 
 app.listen(port, () => {

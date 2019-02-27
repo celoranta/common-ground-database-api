@@ -191,8 +191,9 @@ app.get('/persons', (req, res) => {
     `
     )  , function (error, results, fields) {
       if (error) throw error;
-      console.log(res)
+      return res.send(results)
     };
+    connection.end();
 });
 
 app.listen(port, () => {

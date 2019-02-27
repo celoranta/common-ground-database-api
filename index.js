@@ -191,9 +191,10 @@ app.get('/persons', (req, res) => {
     `
     )  , function (error, results, fields) {
       if (error) throw error;
+      connection.end();
     };
   //return res.send('Received a GET message');
-  connection.end();
+
 });
 
 app.listen(port, () => {

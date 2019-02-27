@@ -163,8 +163,9 @@ connection.end();
  //MARK: --------------- INITIALISE THE SERVER
 
 //init the server
-app.get('/get', (req, res) => {
-  res.send('hello, world!');
+app.get('/', (req, res) => {
+  
+  res.send('Received a GET message');
 });
 
 app.listen(port, () => {

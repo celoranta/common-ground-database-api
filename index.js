@@ -183,6 +183,18 @@ app.delete('/', (req, res) => {
   return res.send('Received a DELETE message');
 });
 
+app.get('/persons', (req, res) => {
+  return await connection.query(
+    `
+    SELECT * FROM Persons (
+    );
+    `
+    )  , function (error, results, fields) {
+      if (error) throw error;
+    };
+  return res.send('Received a GET message');
+});
+
 app.listen(port, () => {
 
   console.log(`listening on port ${port}`)

@@ -184,6 +184,13 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/persons', (req, res) => {
+  var connection = mysql.createConnection({
+    host     : process.env.HOST,
+    user     : process.env.DB_USER,
+    password : process.env.MYSQL_PASSWORD,
+    database : process.env.MYSQL_DATABASE
+  });
+  connection.connect();
    connection.query(
     `
     SELECT * FROM Persons (

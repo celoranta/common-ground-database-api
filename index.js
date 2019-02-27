@@ -168,6 +168,21 @@ app.get('/', (req, res) => {
   return res.send('Received a GET message');
 });
 
+app.post('/', (req, res) => {
+  
+  return res.send('Received a POST message');
+});
+
+app.put('/', (req, res) => {
+  
+  return res.send('Received a PUT message');
+});
+
+app.delete('/', (req, res) => {
+  
+  return res.send('Received a DELETE message');
+});
+
 app.listen(port, () => {
 
   console.log(`listening on port ${port}`)

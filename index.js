@@ -192,11 +192,11 @@ app.post('/Persons', (req, res) => {
 });
 
 app.put('/Persons/:PersonID', (req, res) => {   
-  return res.send('PUT method for Persons /'+ req.params.PersonID +' objects');
+  return res.send('PUT method for Person '+ req.params.PersonID +' object');
 });
 
 app.delete('/Persons/:PersonID', (req, res) => {   
-  return res.send('DELETE method for Persons objects');
+  return res.send('DELETE method for Person' + req.params.PersonID + ' objects');
 });
 
 app.listen(port, () => {

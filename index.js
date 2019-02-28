@@ -142,6 +142,18 @@ PRIMARY KEY (ID)
   if (error) throw error;
 };
 
+var sqlPersons 
+connection.query(
+  `
+  SELECT * FROM Persons (
+
+  );
+  `
+  )  , function (error, results, fields) {
+    if (error) throw error;
+    sqlPersons = results;
+  };
+
 // connection.query(
 //   `
 //   INSERT INTO BandContactInfo (CityName, StateOrProvince, PhoneNumber, EmailAddress)
@@ -184,7 +196,7 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/Persons', (req, res) => {   
-return res.send('Get method for Persons objects');
+return res.send('Get method for Persons objects: ' + sqlPersons);
 });
 
 app.post('/Persons', (req, res) => {   
@@ -196,7 +208,7 @@ app.put('/Persons/:PersonID', (req, res) => {
 });
 
 app.delete('/Persons/:PersonID', (req, res) => {   
-  return res.send('DELETE method for Person' + req.params.PersonID + ' objects');
+  return res.send('DELETE method for Person ' + req.params.PersonID + ' objects');
 });
 
 app.listen(port, () => {

@@ -221,7 +221,7 @@ app.listen(port, () => {
 
 
 function getDriver(callback) {    
-  connection.query("SELECT * FROM Persons",
+  connection.query("SELECT * FROM Persons;",
       function (err, rows) {
           //here we return the results of the query
           callback(err, rows); 

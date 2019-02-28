@@ -183,7 +183,7 @@ app.delete('/', (req, res) => {
   return res.send('Received a DELETE message');
 });
 
-router.get('/Persons', function(req, res, next) {   
+app.get('/Persons', function(req, res, next) {   
   //now you can call the get-driver, passing a callback function
   getDriver(function (err, driverResult){ 
      //you might want to do something is err is not null...      

@@ -183,36 +183,10 @@ app.delete('/', (req, res) => {
   return res.send('Received a DELETE message');
 });
 
-app.get('/Persons', function(req, res, next) {   
-  //now you can call the get-driver, passing a callback function
-  getDriver(function (err, driverResult){ 
-     //you might want to do something is err is not null...      
-     res.render('SQLtest', { 'title': 'SQL test',
-                      'result': driverResult});
-
+app.get('/Persons', (req, res) => {   
+return res.send('Get method for Persons objects');
   });
-});
 
-
-
-// app.get('/persons', (req, res) => {
-//   var connection = mysql.createConnection({
-//     host     : process.env.HOST,
-//     user     : process.env.DB_USER,
-//     password : process.env.MYSQL_PASSWORD,
-//     database : process.env.MYSQL_DATABASE
-//   });
-//   connection.connect();
-//    connection.query(
-//     `
-//     SELECT * FROM Persons;
-//     `
-//     )  , function (error, results, fields) {
-//       if (error) throw error;
-//       return res.send(results)
-//     };
-//     connection.end();
-// });
 
 app.listen(port, () => {
 
@@ -220,12 +194,5 @@ app.listen(port, () => {
 })
 
 
-function getDriver(callback) {    
-  connection.query("SELECT * FROM Persons;",
-      function (err, rows) {
-          //here we return the results of the query
-          callback(err, rows); 
-      }
-  );    
-}
+
 

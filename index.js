@@ -10,13 +10,7 @@ const port = process.env.PORT;
  app.use(bodyParser.urlencoded({ extended: true }))
 
 //Test Database
- var connection = mysql.createConnection({
-  host     : process.env.HOST,
-  user     : process.env.DB_USER,
-  password : process.env.MYSQL_PASSWORD,
-  database : process.env.MYSQL_DATABASE
-});
-connection.connect();
+ var connection = getConnectedDb();
 
 connection.query(
   `
@@ -142,17 +136,17 @@ PRIMARY KEY (ID)
   if (error) throw error;
 };
 
-var sqlPersons 
-connection.query(
-  `
-  SELECT * FROM Persons (
+// var sqlPersons 
+// connection.query(
+//   `
+//   SELECT * FROM Persons (
 
-  );
-  `
-  )  , function (error, results, fields) {
-    if (error) throw error;
-    sqlPersons = results;
-  };
+//   );
+//   `
+//   )  , function (error, results, fields) {
+//     if (error) throw error;
+//     sqlPersons = results;
+//   };
 
 // connection.query(
 //   `
@@ -196,7 +190,7 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/Persons', (req, res) => {   
-return res.send('Get method for Persons objects: ' + sqlPersons);
+return res.send('Get method for Persons objects ');
 });
 
 app.post('/Persons', (req, res) => {   
@@ -215,6 +209,17 @@ app.listen(port, () => {
 
   console.log(`listening on port ${port}`)
 })
+
+function getConnectedDb(){
+var connection = mysql.createConnection({
+  host     : process.env.HOST,
+  user     : process.env.DB_USER,
+  password : process.env.MYSQL_PASSWORD,
+  database : process.env.MYSQL_DATABASE
+});
+connection.connect();
+return connection;
+}
 
 
 

@@ -194,7 +194,7 @@ return res.send('Get method for Persons objects ');
 });
 
 app.post('/Persons', (req, res) => {   
-  return dbQuery('SELECT * FROM Persons');
+  return res.send(dbQuery('SELECT * FROM Persons'));
 });
 
 app.put('/Persons/:PersonID', (req, res) => {   

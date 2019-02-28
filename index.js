@@ -230,7 +230,7 @@ async function dbQuery(queryString) {
     queryString
     )  , function (error, results, fields) {
       if (error) throw error;
-      return results;
+      return 'Testing';
     };
 }
 

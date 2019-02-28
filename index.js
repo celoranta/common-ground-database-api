@@ -190,11 +190,12 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/Persons', (req, res) => {   
-return res.send('Get method for Persons objects ');
+  return res.send(dbQuery('SELECT * FROM Persons'));
 });
 
 app.post('/Persons', (req, res) => {   
-  return res.send(dbQuery('SELECT * FROM Persons'));
+  return res.send('POST method for Persons object'
+  )
 });
 
 app.put('/Persons/:PersonID', (req, res) => {   

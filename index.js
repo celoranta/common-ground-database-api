@@ -194,7 +194,7 @@ return res.send('Get method for Persons objects ');
 });
 
 app.post('/Persons', (req, res) => {   
-  return await dbQuery('SELECT * FROM Persons');
+  return dbQuery('SELECT * FROM Persons');
 });
 
 app.put('/Persons/:PersonID', (req, res) => {   
@@ -223,7 +223,7 @@ return connection;
 
 async function dbQuery(queryString) {
   var connection = getConnectedDb();
-  connection.query(
+  await connection.query(
     queryString
     )  , function (error, results, fields) {
       if (error) throw error;

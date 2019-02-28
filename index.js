@@ -185,8 +185,19 @@ app.delete('/', (req, res) => {
 
 app.get('/Persons', (req, res) => {   
 return res.send('Get method for Persons objects');
-  });
+});
 
+app.post('/Persons', (req, res) => {   
+  return res.send('POST method for Persons objects');
+});
+
+app.put('/Persons/:PersonID', (req, res) => {   
+  return res.send('PUT method for Persons /'+ req.params.PersonID +' objects');
+});
+
+app.delete('/Persons/:PersonID', (req, res) => {   
+  return res.send('DELETE method for Persons objects');
+});
 
 app.listen(port, () => {
 

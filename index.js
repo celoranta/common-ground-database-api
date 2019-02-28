@@ -190,9 +190,7 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/Persons', (req, res) => {   
-  return res.send(dbQuery('SELECT * FROM Persons')),
-  connection.end();
-
+  return res.send(dbQuery('SELECT * FROM Persons'))
 });
 
 app.post('/Persons', (req, res) => {   
@@ -231,7 +229,8 @@ async function dbQuery(queryString) {
     )  , function (error, results, fields) {
       if (error) throw error;
       return 'Testing';
-    };
+    },
+    connection.end();
 }
 
 

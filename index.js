@@ -57,10 +57,6 @@ sequelize
     NameType: {
       type: Sequelize.STRING
     },
-    CreatedAt: {
-      type: Sequelize.DATE
-    },
-
   });
   
   // force: true will drop the table if it already exists

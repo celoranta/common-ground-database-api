@@ -1,6 +1,6 @@
 //LOOK AT https://www.terlici.com/2015/08/13/mysql-node-express.html
 
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var env = require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');

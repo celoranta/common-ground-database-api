@@ -62,7 +62,7 @@ sequelize
   });
   
   // force: true will drop the table if it already exists
-  PersonNameTypes.sync({force: false}).then(() => {
+  PersonNameTypes.sync({force: true}).then(() => {
     // Table created
     // return User.create({
     //   firstName: 'John',

@@ -162,15 +162,9 @@ app.delete('/', (req, res) => {
   return res.send('Received a DELETE message');
 });
 
-app.get('/Persons', (req, res) => {   
-  var results;
-  try {
-  results = allPersons();
-  return results;
-  }
-  catch(err) {
-    alert(err);
-  }
+app.get('/Persons', function(req, res, err)  {   
+  if (err) throw err;
+  console.log('The solution is: ', rows[0].solution);
 });
 
 app.post('/Persons', (req, res) => {   

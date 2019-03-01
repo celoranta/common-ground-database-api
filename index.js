@@ -163,8 +163,11 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/Persons', function(req, res, err)  {   
-  if (err) throw err;
-  console.log('The solution is: ', rows[0].solution);
+  connection.query('SELECT * FROM Persons AS solution', function (err, rows, fields) {
+    if (err) throw err
+  
+    console.log('The solution is: ', rows[0].solution)
+  })
 });
 
 app.post('/Persons', (req, res) => {   

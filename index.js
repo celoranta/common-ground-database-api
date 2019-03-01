@@ -53,14 +53,14 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-  const PersonNameType = sequelize.define('PersonNameType', {
+  const PersonNameTypes = sequelize.define('PersonNameTypes', {
     NameType: {
       type: Sequelize.STRING
     },
   });
   
   // force: true will drop the table if it already exists
-  PersonNameType.sync({force: true}).then(() => {
+  PersonNameTypes.sync({force: true}).then(() => {
     // Table created
     // return User.create({
     //   firstName: 'John',
@@ -210,8 +210,8 @@ app.delete('/', (req, res) => {
   return res.send('Received a DELETE message');
 });
 
-app.get('/PersonNameType', function(req, res, err)  {   
-  PersonNameType.findAll()
+app.get('/PersonNameTypes', function(req, res, err)  {   
+  PersonNameTypes.findAll()
   .then(personNameTypes => {
     console.log(personNameTypes);
   }

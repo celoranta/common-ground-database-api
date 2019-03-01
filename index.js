@@ -218,7 +218,7 @@ async function allPersons() {
   };
     connection.end();
     console.log(results);
-  return results;
+  return await uresults;
 }
 
 

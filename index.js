@@ -236,9 +236,9 @@ app.get('/PersonNameTypes', function(req, res, err)  {
   );
 });
 
-app.put('/PersonNameTypes/:PersonNameType', function(req, res, err)  {   
+app.put('/PersonNameTypes/:NameType/', function(req, res, err)  {   
   PersonNameTypes
-  .findOrCreate({where: {NameType: req.params.personNameType}})
+  .findOrCreate({where: {NameType: req.params.NameType}})
   .spread((personNameType, created) => {
     console.log(personNameType.get({
       plain: true

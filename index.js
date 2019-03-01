@@ -53,7 +53,9 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-  const PersonNameTypes = sequelize.define('PersonNameTypes', {
+  const PersonNameTypes = sequelize.define(
+    'PersonNameTypes', 
+    {
     NameType: {
       type: Sequelize.STRING
     },
@@ -67,6 +69,21 @@ sequelize
     //   lastName: 'Hancock'
     // });
   });
+
+  // const User = sequelize.define(
+  //   'user',
+  //   {
+  //     first_name: {
+  //       type: Sequelize.STRING,
+  //     },
+  //     last_name: {
+  //       type: Sequelize.STRING,
+  //     },
+  //     email: {
+  //       type: Sequelize.STRING,
+  //     },
+  //   }
+  // );
 
 
 
@@ -221,7 +238,7 @@ app.get('/PersonNameTypes', function(req, res, err)  {
 
 app.put('/PersonNameTypes', function(req, res, err)  {   
   PersonNameTypes
-  .findOrCreate({where: {nameType: 'surname'}})
+  .findOrCreate({where: {NameType: 'surname'}})
   .spread((personNameType, created) => {
     console.log(personNameType.get({
       plain: true
@@ -243,6 +260,7 @@ app.put('/PersonNameTypes', function(req, res, err)  {
  In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
     */
   })
+  return res.send('Added new object');
 });
 
 app.post('/Persons', (req, res) => {   

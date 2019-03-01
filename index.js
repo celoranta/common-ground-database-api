@@ -222,11 +222,11 @@ app.get('/PersonNameTypes', function(req, res, err)  {
 app.put('/PersonNameTypes', function(req, res, err)  {   
   PersonNameTypes
   .findOrCreate({where: {nameType: 'surname'}})
-  .spread((user, created) => {
-    console.log(user.get({
+  .spread((personNameType, created) => {
+    console.log(personNameType.get({
       plain: true
     }))
-    console.log(created)
+    console.log(personNameType)
 
     /*
      findOrCreate returns an array containing the object that was found or created and a boolean that will be true if a new object was created and false if not, like so:

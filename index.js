@@ -231,7 +231,7 @@ app.get('/PersonNameTypes', function(req, res, err)  {
   PersonNameTypes.findAll()
   .then(personNameTypes => {
     console.log(personNameTypes);
-    return personNameTypes
+    return res.send(personNameTypes);
   }
   );
 });

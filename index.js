@@ -210,13 +210,16 @@ app.delete('/', (req, res) => {
   return res.send('Received a DELETE message');
 });
 
-// app.get('/Persons', function(req, res, err)  {   
-//   connection.query('SELECT * FROM Persons AS solution', function (err, rows, fields) {
-//     if (err) throw err
-  
-//     console.log('The solution is: ', rows[0].solution)
-//   })
-// });
+app.get('/PersonNameType', function(req, res, err)  {   
+  PersonNameType.findAll({  
+    // attributes: []
+})
+  .then(personNameTypes => {
+    console.log(personNameTypes);
+  }
+
+  );
+});
 
 app.post('/Persons', (req, res) => {   
   return res.send('POST method for Persons object'

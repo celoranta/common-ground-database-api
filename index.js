@@ -57,7 +57,7 @@ sequelize
     'PersonNameTypes', 
     {
     NameType: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING, allowNull: false
     },
   });
   

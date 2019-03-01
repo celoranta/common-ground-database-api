@@ -217,7 +217,7 @@ async function allPersons() {
     uresults = results
   };
     connection.end();
-    console.log(results);
+    console.log(uresults);
   return await uresults;
 }
 

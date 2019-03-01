@@ -211,9 +211,7 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/PersonNameType', function(req, res, err)  {   
-  PersonNameType.findAll({  
-    // attributes: []
-})
+  PersonNameType.findAll()
   .then(personNameTypes => {
     console.log(personNameTypes);
   }

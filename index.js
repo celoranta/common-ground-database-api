@@ -20,14 +20,14 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 
- connection.query(
-  `
-  CREATE DATABASE IF NOT EXISTS commonground;
-  `
-  )  , function (error, results, fields) {
-    if (error) throw error;
-  };
-connection.end();
+//  connection.query(
+//   `
+//   CREATE DATABASE IF NOT EXISTS commonground;
+//   `
+//   )  , function (error, results, fields) {
+//     if (error) throw error;
+//   };
+// connection.end();
 
 
 

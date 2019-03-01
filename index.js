@@ -192,7 +192,7 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/Persons', (req, res) => {   
-  return res.send(dbQuery('SELECT * FROM Persons'))
+  return allPersons();
 });
 
 app.post('/Persons', (req, res) => {   

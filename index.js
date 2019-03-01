@@ -1,3 +1,5 @@
+//LOOK AT https://www.terlici.com/2015/08/13/mysql-node-express.html
+
 var mysql = require('mysql');
 var env = require('dotenv').config();
 var express = require('express');
@@ -222,15 +224,17 @@ connection.connect();
 return connection;
 }
 
-async function dbQuery(queryString) {
+async function allPersons() {
   var connection = getConnectedDb();
-  await connection.query(
-    queryString
-    )  , function (error, results, fields) {
-      if (error) throw error;
-      return 'Testing';
-    },
+  var uresults;
+  await connection.query("SELECT * FROM Persons;")
+   , function (error, results, fields) {
+    if (error) throw error;
+    uresults = results
+  };
     connection.end();
+    console.log(results);
+  return results;
 }
 
 

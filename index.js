@@ -3,7 +3,7 @@
 var mysql = require('mysql');
 var env = require('dotenv').config();
 var express = require('express');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');s
 
 
 var app = express();
@@ -137,40 +137,11 @@ PRIMARY KEY (ID)
 )  , function (error, results, fields) {
   if (error) throw error;
 };
-
-// var sqlPersons 
-// connection.query(
-//   `
-//   SELECT * FROM Persons (
-
-//   );
-//   `
-//   )  , function (error, results, fields) {
-//     if (error) throw error;
-//     sqlPersons = results;
-//   };
-
-// connection.query(
-//   `
-//   INSERT INTO BandContactInfo (CityName, StateOrProvince, PhoneNumber, EmailAddress)
-//   VALUES(
-//     'Vancouver',
-//     'BC',
-//     '+1 604-657-5677',
-//     'info@commongroundband.ca'
-//    );
-//   `
-//   )  , function (error, results, fields) {
-//     if (error) throw error;
-//     console.log('The solution is: ', results[0].solution);
-//   };
  
 connection.end();
 
+//MARK: Define API Endpoints
 
- //MARK: --------------- INITIALISE THE SERVER
-
-//init the server
 app.get('/', (req, res) => {
   
   return res.send('Received a GET message');
@@ -192,7 +163,14 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/Persons', (req, res) => {   
-  return allPersons();
+  var results;
+  try {
+  results = allPersons();
+  return results;
+  }
+  catch(err) {
+    alert(err);
+  }
 });
 
 app.post('/Persons', (req, res) => {   
@@ -207,6 +185,10 @@ app.put('/Persons/:PersonID', (req, res) => {
 app.delete('/Persons/:PersonID', (req, res) => {   
   return res.send('DELETE method for Person ' + req.params.PersonID + ' objects');
 });
+
+ //MARK: --------------- INITIALISE THE SERVER
+
+//init the server
 
 app.listen(port, () => {
 
@@ -223,6 +205,8 @@ var connection = mysql.createConnection({
 connection.connect();
 return connection;
 }
+
+//MARK: Helper Functions
 
 async function allPersons() {
   var connection = getConnectedDb();

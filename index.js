@@ -221,7 +221,7 @@ app.get('/PersonNameTypes', function(req, res, err)  {
 
 app.put('/PersonNameTypes', function(req, res, err)  {   
   PersonNameTypes
-  .findOrCreate({where: {username: process.env.DB_USER}, defaults: {nameType: 'surname'}})
+  .findOrCreate({where: {nameType: 'surname'}})
   .spread((user, created) => {
     console.log(user.get({
       plain: true

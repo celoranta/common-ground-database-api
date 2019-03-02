@@ -71,7 +71,13 @@ sequelize
   });
 
   const Person = sequelize.define(
-    'Person'
+    'Person', {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      }
+    }
   );
 
   Person.sync({force: false})

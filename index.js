@@ -245,7 +245,7 @@ app.post('/Persons', (req, res) => {
 
 app.put('/Persons', function(req, res, err) {   
   Person
-  .findOrCreate({where: {bufferValue = 1}})
+  .findOrCreate({where: {bufferValue: 1}})
   .spread((person, created) => {
     console.log(person.get({
       plain: true

@@ -104,7 +104,7 @@ const PersonName = sequelize.define(
   }
 );
 PersonNameType.hasMany(PersonName);
-Person.hasMany(personName);
+Person.hasMany(PersonName);
 
 
 PersonName.sync({force: false})

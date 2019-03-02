@@ -53,56 +53,59 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-  const PersonNameType = sequelize.define(
-    'PersonNameType', 
-    {
-    NameType: {
-      type: Sequelize.STRING, allowNull: false
-    },
-  });
+const PersonNameType = sequelize.define(
+  'PersonNameType', 
+  {
+  NameType: {
+    type: Sequelize.STRING, allowNull: false
+  },
+});
   
-  // force: true will drop the table if it already exists
-  PersonNameType.sync({force: true}).then(() => {
-    // Table created
-    // return User.create({
-    //   firstName: 'John',
-    //   lastName: 'Hancock'
-    // });
-  });
+// force: true will drop the table if it already exists
+PersonNameType.sync({force: true}).then(() => {
+  // Table created
+  // return User.create({
+  //   firstName: 'John',
+  //   lastName: 'Hancock'
+  // });
+});
 
-  const Person = sequelize.define(
-    'Person', 
-    {
-      bufferValue: {
-        type: Sequelize.TINYINT(1)
-      },
-    }
-  );
+const Person = sequelize.define(
+  'Person', 
+  {
+    bufferValue: {
+      type: Sequelize.TINYINT(1)
+    },
+  }
+);
 
-  Person.sync({force: false})
-  .then(() => {
-  });
+Person.sync({force: false})
+.then(() => {
+});
 
 const PersonName = sequelize.define(
   'PersonName',
   {
-    PersonNameType: {
-      type: Sequelize.INTEGER, 
-      allowNull: false,
-      references: 'PersonNameType',
-      referencesKey: 'id'
-    },
+    // PersonNameType: {
+    //   type: Sequelize.INTEGER, 
+    //   allowNull: false,
+    //   references: 'PersonNameType',
+    //   referencesKey: 'id'
+    // },
     PersonName: {
       type: Sequelize.STRING,
       allowNull: false
-    },
-    Person: {
-      type: Sequelize.INTEGER,
-      references: Person,
-      referencesKey: 'id'
-    }
+    }/*,*/
+    // Person: {
+    //   type: Sequelize.INTEGER,
+    //   references: Person,
+    //   referencesKey: 'id'
+    // }
   }
 );
+PersonNameType.hasMany(PersonName);
+Person.hasMany(personName);
+
 
 PersonName.sync({force: false})
 .then(() => {

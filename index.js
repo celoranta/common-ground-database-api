@@ -104,6 +104,8 @@ const PersonName = sequelize.define(
   }
 );
 
+PersonName.sync({force: false})
+
 //PersonName.hasMany(Person); // One person has many names
 //PersonName.hasMany(PersonNameType);  //One personNameType refers to many PersonNames
 

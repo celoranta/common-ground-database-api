@@ -71,10 +71,7 @@ sequelize
   });
 
   const Person = sequelize.define(
-    'Person',
-    {
-
-    }
+    'Person'
   );
 
   Person.sync({force: false})

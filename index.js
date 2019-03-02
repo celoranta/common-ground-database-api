@@ -228,7 +228,7 @@ app.delete('/', (req, res) => {
 });
 
 app.get('/PersonNameTypes', function(req, res, err)  {   
-  PersonNameTypes.findAll()
+  PersonNameType.findAll()
   .then(personNameTypes => {
     console.log(personNameTypes);
     return res.send(personNameTypes);

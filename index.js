@@ -29,8 +29,6 @@ connection.connect();
 //   };
 // connection.end();
 
-
-
 const sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.DB_USER, process.env.MYSQL_PASSWORD , {
   host: process.env.HOST,
   dialect: 'mysql',
@@ -52,6 +50,8 @@ sequelize
   .catch(err => {
     console.error('Unable to connect to the database:', err);
   });
+
+  //Model Definition
 
 const PersonNameType = sequelize.define(
   'PersonNameType', 
@@ -86,33 +86,19 @@ Person.sync({force: false})
 const PersonName = sequelize.define(
   'PersonName',
   {
-    // PersonNameType: {
-    //   type: Sequelize.INTEGER, 
-    //   allowNull: false,
-    //   references: 'PersonNameType',
-    //   referencesKey: 'id'
-    // },
     PersonName: {
       type: Sequelize.STRING,
       allowNull: false
-    }/*,*/
-    // Person: {
-    //   type: Sequelize.INTEGER,
-    //   references: Person,
-    //   referencesKey: 'id'
-    // }
+    }
   }
 );
-PersonNameType.hasMany(PersonName);
-Person.hasMany(PersonName);
+// PersonNameType.hasMany(PersonName);
+// Person.hasMany(PersonName);
 
 
 PersonName.sync({force: false})
 .then(() => {
 });
-
-//PersonName.hasMany(Person); // One person has many names
-//PersonName.hasMany(PersonNameType);  //One personNameType refers to many PersonNames
 
 
 // connection.query(

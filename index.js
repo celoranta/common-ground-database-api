@@ -84,7 +84,7 @@ sequelize
 const PersonName = sequelize.define(
   'PersonName',
   {
-    PersonNameTypeId: {
+    PersonNameType: {
       type: Sequelize.INTEGER, 
       allowNull: false,
       references: 'PersonNameType',

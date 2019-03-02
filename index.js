@@ -72,11 +72,10 @@ sequelize
 
   const Person = sequelize.define(
     'Person', {
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      bufferValue: {
+        type: Sequelize.BOOLEAN
       }
+      
     }
   );
 

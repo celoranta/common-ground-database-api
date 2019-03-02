@@ -243,7 +243,7 @@ app.post('/Persons', (req, res) => {
   )
 });
 
-app.put('/Persons', (req, res) => {   
+app.put('/Persons', function(req, res, err) {   
   Person
   .findOrCreate({where: {bufferValue = true}})
   .spread((person, created) => {

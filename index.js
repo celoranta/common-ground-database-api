@@ -53,8 +53,8 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-  const PersonNameTypes = sequelize.define(
-    'PersonNameTypes', 
+  const PersonNameType = sequelize.define(
+    'PersonNameType', 
     {
     NameType: {
       type: Sequelize.STRING, allowNull: false
@@ -62,7 +62,7 @@ sequelize
   });
   
   // force: true will drop the table if it already exists
-  PersonNameTypes.sync({force: true}).then(() => {
+  PersonNameType.sync({force: true}).then(() => {
     // Table created
     // return User.create({
     //   firstName: 'John',
@@ -237,7 +237,7 @@ app.get('/PersonNameTypes', function(req, res, err)  {
 });
 
 app.put('/PersonNameTypes/:NameType/', function(req, res, err)  {   
-  PersonNameTypes
+  PersonNameType
   .findOrCreate({where: {NameType: req.params.NameType}})
   .spread((personNameType, created) => {
     console.log(personNameType.get({

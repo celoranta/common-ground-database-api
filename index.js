@@ -208,6 +208,7 @@ app.delete('/', (req, res) => {
   return res.send('Received a test DELETE message');
 });
 
+//PersonNameType
 app.get('/PersonNameTypes', function(req, res, err)  {   
   PersonNameType.findAll()
   .then(personNameTypes => {
@@ -232,6 +233,7 @@ app.put('/PersonNameTypes/:NameType', function(req, res, err)  {
 
 });
 
+//Persons
 app.get('/Persons', (req, res) => {
   Person.findAll()
   .then(person => {
@@ -257,12 +259,39 @@ app.put('/Persons', function(req, res, err) {
 });
 
 app.get('/Persons', (req, res) => {
-
+  Persons.findAll()
+  .then(person => {
+    console.log(person);
+    return res.send(person);
+  })
 });
 
 app.delete('/Persons/:PersonID', (req, res) => {   
   return res.send('DELETE method for Person ' + req.params.PersonID + ' objects');
 });
+
+//PersonNames
+app.put('/PersonNames/:Person/:PersonNameType/:PersonName', function(req, res, err) {
+  PersonName
+  .findOrCreate({where: {
+    PersonNameType: req.params.PersonNameType,
+    Person: req.params.Person,
+    PersonName: req.params.PersonName
+  }})
+  .spread((personName, created) => {
+    console.log(personName.get({
+      plain: true
+    }))
+  })
+});
+
+app.get('/PersonNames', (req, res) => {
+  PersonNames.findAll()
+  .then(personName => {
+    console.log(personName);
+    return res.send(personName);
+  })
+})
 
  //MARK: --------------- INITIALISE THE SERVER
 

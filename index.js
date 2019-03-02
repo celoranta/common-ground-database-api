@@ -71,11 +71,11 @@ sequelize
   });
 
   const Person = sequelize.define(
-    'Person', {
+    'Person', 
+    {
       bufferValue: {
         type: Sequelize.BOOLEAN
-      }
-      
+      },
     }
   );
 

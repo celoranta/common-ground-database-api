@@ -248,7 +248,7 @@ app.put('/PersonNameTypes/:NameType', function(req, res, err)  {
 /*
  In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
     */
-   return res.send('Added new object: ' + personNameType.params.NameType);
+   return res.send('Added new object: '/* + personNameType.params.NameType*/);
   })
 
 });

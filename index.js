@@ -93,16 +93,17 @@ const PersonName = sequelize.define(
   }
 );
 
-PersonName.belongsTo(Person);
-PersonName.belongsTo(PersonNameType);
+
 // PersonNameType.hasMany(PersonName);
 // Person.hasMany(PersonName);
 
 
+PersonName.belongsTo(Person);
+PersonName.hasOne(PersonNameType);
+
 PersonName.sync({force: false})
 .then(() => {
 });
-
 
 // connection.query(
 // `
@@ -277,6 +278,7 @@ app.put('/PersonNames/:Person/:PersonNameType/:PersonName', function(req, res, e
       plain: true
     }))
   })
+  return res.send('Added Person Object');
 });
 
 app.get('/PersonNames', (req, res) => {

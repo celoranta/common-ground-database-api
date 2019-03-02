@@ -228,13 +228,32 @@ app.put('/PersonNameTypes/:NameType', function(req, res, err)  {
 
 });
 
+app.get('/Persons', (req, res) => {
+  Person.findAll()
+  .then(person => {
+    console.log(person);
+    return res.send(person);
+  })
+})
+
 app.post('/Persons', (req, res) => {   
   return res.send('POST method for Persons object'
   )
 });
 
-app.put('/Persons/:PersonID', (req, res) => {   
-  return res.send('PUT method for Person '+ req.params.PersonID +' object');
+app.put('/Persons', (req, res) => {   
+  Person
+  .findOrCreate()
+  .spread((person, created) => {
+    console.log(person.get({
+      plain: true
+    }))
+  })
+  return res.send('Added Person Object');
+});
+
+app.get('/Persons', (req, res) => {
+
 });
 
 app.delete('/Persons/:PersonID', (req, res) => {   

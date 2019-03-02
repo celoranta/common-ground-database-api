@@ -92,7 +92,7 @@ const PersonName = sequelize.define(
       references: 'PersonNameType',
       referencesKey: 'id'
     },
-    personName: {
+    PersonName: {
       type: Sequelize.STRING,
       allowNull: false
     },
@@ -105,6 +105,8 @@ const PersonName = sequelize.define(
 );
 
 PersonName.sync({force: false})
+.then(() => {
+});
 
 //PersonName.hasMany(Person); // One person has many names
 //PersonName.hasMany(PersonNameType);  //One personNameType refers to many PersonNames

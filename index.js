@@ -286,7 +286,7 @@ app.put('/PersonNames/:Person/:PersonNameType/:PersonName', function(req, res, e
 });
 
 app.get('/PersonNames', (req, res) => {
-  PersonNames.findAll()
+  PersonName.findAll()
   .then(personName => {
     console.log(personName);
     return res.send(personName);

@@ -92,6 +92,8 @@ const PersonName = sequelize.define(
     }
   }
 );
+
+PersonName.belongsTo(Person);
 // PersonNameType.hasMany(PersonName);
 // Person.hasMany(PersonName);
 

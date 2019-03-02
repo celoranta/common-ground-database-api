@@ -278,7 +278,7 @@ app.put('/PersonNames/:Person/:PersonNameType/:PersonName', function(req, res, e
       plain: true
     }))
   })
-  return res.send('Added Person Object');
+  return res.send('Added PersonName Object');
 });
 
 app.get('/PersonNames', (req, res) => {

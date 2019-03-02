@@ -70,64 +70,41 @@ sequelize
     // });
   });
 
-  // const User = sequelize.define(
-  //   'user',
-  //   {
-  //     first_name: {
-  //       type: Sequelize.STRING,
-  //     },
-  //     last_name: {
-  //       type: Sequelize.STRING,
-  //     },
-  //     email: {
-  //       type: Sequelize.STRING,
-  //     },
-  //   }
-  // );
+  const Person = sequelize.define(
+    'Person',
+    {
 
+    }
+  );
 
+  Person.sync({force: false})
+  .then(() => {
+  });
 
-// connection.query(
-//   `
-//   CREATE TABLE IF NOT EXISTS PersonNameTypes (
-//   PersonNameTypeID int NOT NULL AUTO_INCREMENT,
-//   NameType varchar(255) NOT NULL,
-//   CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//   PRIMARY KEY (PersonNameTypeID)
-//   );
-//   `
-//   )  , function (error, results, fields) {
-//     if (error) throw error;
-//   };
+const PersonName = sequelize.define(
+  'PersonName',
+  {
+    PersonNameTypeId: {
+      type: Sequelize.INTEGER, 
+      allowNull: false,
+      references: 'PersonNameType',
+      referencesKey: 'id'
+    },
+    personName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    Person: {
+      type: Sequelize.INTEGER,
+      references: Person,
+      referencesKey: 'id'
+    }
+  }
+);
 
-// connection.query(
-//   `
-//   CREATE TABLE IF NOT EXISTS Persons (
-//   PersonID int NOT NULL AUTO_INCREMENT,
-//   CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//   PRIMARY KEY (PersonID)
-//   );
-//   `
-//   )  , function (error, results, fields) {
-//     if (error) throw error;
-//   };
+PersonName.hasMany(Person); // One person has many names
+PersonName.hasMany(PersonNameType);  //One personNameType refers to many PersonNames
 
-// connection.query(
-// `
-// CREATE TABLE IF NOT EXISTS PersonNames (
-// PersonNameID int NOT NULL AUTO_INCREMENT,
-// CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-// PersonNameType Int NOT NULL,
-// PersonNameString varchar(255) NOT NULL,
-// PersonID Int NOT NULL,
-// PRIMARY KEY (PersonNameID),
-// FOREIGN KEY (PersonNameType) REFERENCES PersonNameTypes(PersonNameTypeID),
-// FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
-// );
-// `
-// )  , function (error, results, fields) {
-//   if (error) throw error;
-// };
 
 // connection.query(
 // `
@@ -209,22 +186,22 @@ sequelize
 
 app.get('/', (req, res) => {
   
-  return res.send('Received a GET message');
+  return res.send('Received a test GET message');
 });
 
 app.post('/', (req, res) => {
   
-  return res.send('Received a POST message');
+  return res.send('Received a test POST message');
 });
 
 app.put('/', (req, res) => {
   
-  return res.send('Received a PUT message');
+  return res.send('Received a test PUT message');
 });
 
 app.delete('/', (req, res) => {
   
-  return res.send('Received a DELETE message');
+  return res.send('Received a test DELETE message');
 });
 
 app.get('/PersonNameTypes', function(req, res, err)  {   
@@ -243,12 +220,10 @@ app.put('/PersonNameTypes/:NameType', function(req, res, err)  {
     console.log(personNameType.get({
       plain: true
     }))
-    console.log(personNameType)
-
 /*
- In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
+ In the example above, the "spread" divides the array into its 2 parts and passes them as arguments to the callback function defined prior, which treats them as "personNameType" and "created" in this case. (So "personNameType" will be the object from index 0 of the returned array and "created" will equal "true".)
     */
-   return res.send('Added new object: '/* + personNameType.params.NameType*/);
+   return res.send('Added new object.'/* + personNameType.params.NameType*/);
   })
 
 });

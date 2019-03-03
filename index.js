@@ -78,7 +78,7 @@ const PersonName = sequelize.define(
   }
 );
 
-Person.hasMany(PersonNames);
+Person.hasMany(PersonName);
 
 //Person.hasMany(PersonName);
 //PersonName.hasOne(PersonNameType);

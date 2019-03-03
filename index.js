@@ -78,6 +78,8 @@ const PersonName = sequelize.define(
   }
 );
 
+Person.hasMany(PersonName);
+
 //Person.hasMany(PersonName);
 //PersonName.hasOne(PersonNameType);
 
@@ -232,7 +234,7 @@ app.put('/PersonNames/:PersonName', function(req, res, err) {
   PersonName
   .findOrCreate({where: {
     //PersonNameType: req.params.PersonNameType,
-    //Person: req.params.Person,
+    // Person: req.params.Person,
     PersonName: req.params.PersonName
   }})
   .spread((personName, created) => {

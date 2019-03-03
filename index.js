@@ -53,32 +53,26 @@ sequelize
   });
 
 //Model Definition
-const PersonNameType = sequelize.define(
-  'PersonNameType', 
-  {
-  NameType: {
+const PersonNameType = sequelize.define('PersonNameType', {
+  nameType: {
     type: Sequelize.STRING, allowNull: false
-  },
+  }
 });
-const Person = sequelize.define(
-  'Person', 
-  {
+const Person = sequelize.define('Person', {
     bufferValue: {
       type: Sequelize.TINYINT(1)
-    },
+    }
   }
 );
-const PersonName = sequelize.define(
-  'PersonName',
-  {
-    PersonName: {
+const PersonName = sequelize.define('PersonName',{
+    personName: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    PersonId: {
+    personId: {
       type: Sequelize.INTEGER,
       references: {
-        model: 'People',
+        model: 'people',
         key: 'id'
       }
     }

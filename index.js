@@ -262,10 +262,10 @@ app.delete('/Persons/:PersonID', (req, res) => {
 });
 
 //PersonNames
-app.put('/PersonNames/:Person/:PersonNameType/:PersonName', function(req, res, err) {
+app.put('/PersonNames/:PersonName/:PersonName', function(req, res, err) {
   PersonName
   .findOrCreate({where: {
-    PersonNameType: req.params.PersonNameType,
+    //PersonNameType: req.params.PersonNameType,
     Person: req.params.Person,
     PersonName: req.params.PersonName
   }})

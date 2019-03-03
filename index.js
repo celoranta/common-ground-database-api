@@ -234,7 +234,7 @@ app.put('/PersonNames/:PersonName/:Person', function(req, res, err) {
   PersonName
   .findOrCreate({where: {
     //PersonNameType: req.params.PersonNameType,
-    PersonID: req.params.Person,
+    PersonId: req.params.Person,
     PersonName: req.params.PersonName
   }})
   .spread((personName, created) => {

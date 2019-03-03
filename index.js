@@ -80,7 +80,8 @@ const PersonName = sequelize.define(
   }
 );
 
-PersonName.belongsTo(Person);
+Person.hasMany(PersonName);
+
 //PersonName.hasOne(PersonNameType);
 
 // force: true will drop the table if it already exists

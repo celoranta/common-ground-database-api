@@ -60,7 +60,6 @@ const PersonNameType = sequelize.define(
     type: Sequelize.STRING, allowNull: false
   },
 });
-  
 const Person = sequelize.define(
   'Person', 
   {
@@ -69,7 +68,6 @@ const Person = sequelize.define(
     },
   }
 );
-
 const PersonName = sequelize.define(
   'PersonName',
   {
@@ -81,7 +79,6 @@ const PersonName = sequelize.define(
 );
 
 //Person.hasMany(PersonName);
-
 //PersonName.hasOne(PersonNameType);
 
 // force: true will drop the table if it already exists
@@ -180,36 +177,37 @@ Person.sync({force: force})
 
 //MARK: Define API Endpoints
 
+//MARK: Gets
+
 app.get('/', (req, res) => {
-  
   return res.send('Received a test GET message');
 });
-
-app.post('/', (req, res) => {
-  
-  return res.send('Received a test POST message');
-});
-
-app.put('/', (req, res) => {
-  
-  return res.send('Received a test PUT message');
-});
-
-app.delete('/', (req, res) => {
-  
-  return res.send('Received a test DELETE message');
-});
-
-//PersonNameType
 app.get('/PersonNameTypes', function(req, res, err)  {   
   PersonNameType.findAll()
   .then(personNameTypes => {
     console.log(personNameTypes);
     return res.send(personNameTypes);
-  }
-  );
+  });
+});
+app.get('/Persons', (req, res) => {
+  Person.findAll()
+  .then(person => {
+    console.log(person);
+    return res.send(person);
+  });
+});
+app.get('/PersonNames', (req, res) => {
+  PersonName.findAll()
+  .then(personName => {
+    console.log(personName);
+    return res.send(personName);
+  });
 });
 
+//MARK: Puts
+app.put('/', (req, res) => {
+  return res.send('Received a test PUT message');
+});
 app.put('/PersonNameTypes/:NameType', function(req, res, err)  {   
   PersonNameType
   .findOrCreate({where: {NameType: req.params.NameType}})
@@ -217,28 +215,9 @@ app.put('/PersonNameTypes/:NameType', function(req, res, err)  {
     console.log(personNameType.get({
       plain: true
     }))
-/*
- In the example above, the "spread" divides the array into its 2 parts and passes them as arguments to the callback function defined prior, which treats them as "personNameType" and "created" in this case. (So "personNameType" will be the object from index 0 of the returned array and "created" will equal "true".)
-    */
-   return res.send('Added new object.'/* + personNameType.params.NameType*/);
+    return res.send('Added new object.'/* + personNameType.params.NameType*/);
   })
-
 });
-
-//Persons
-app.get('/Persons', (req, res) => {
-  Person.findAll()
-  .then(person => {
-    console.log(person);
-    return res.send(person);
-  })
-})
-
-app.post('/Persons', (req, res) => {   
-  return res.send('POST method for Persons object'
-  )
-});
-
 app.put('/Persons', function(req, res, err) {   
   Person
   .findOrCreate({where: {bufferValue: 1}})
@@ -246,23 +225,9 @@ app.put('/Persons', function(req, res, err) {
     console.log(person.get({
       plain: true
     }))
-  })
-  return res.send('Added Person Object');
-});
-
-app.get('/Persons', (req, res) => {
-  Persons.findAll()
-  .then(person => {
-    console.log(person);
-    return res.send(person);
+    return res.send('Added Person Object');
   })
 });
-
-app.delete('/Persons/:PersonID', (req, res) => {   
-  return res.send('DELETE method for Person ' + req.params.PersonID + ' objects');
-});
-
-//PersonNames
 app.put('/PersonNames/:PersonName/:PersonName', function(req, res, err) {
   PersonName
   .findOrCreate({where: {
@@ -274,44 +239,35 @@ app.put('/PersonNames/:PersonName/:PersonName', function(req, res, err) {
     console.log(personName.get({
       plain: true
     }))
+    return res.send('Added PersonName Object');
   })
-  return res.send('Added PersonName Object');
 });
 
-app.get('/PersonNames', (req, res) => {
-  PersonName.findAll()
-  .then(personName => {
-    console.log(personName);
-    return res.send(personName);
-  })
-})
+
+//MARK: Posts
+app.post('/', (req, res) => {
+  
+  return res.send('Received a test POST message');
+});
+app.post('/Persons', (req, res) => {   
+  return res.send('POST method for Persons object'
+  )
+});
+
+
+//MARK: Deletes
+app.delete('/', (req, res) => {
+  
+  return res.send('Received a test DELETE message');
+});
+app.delete('/Persons/:PersonID', (req, res) => {   
+  return res.send('DELETE method for Person ' + req.params.PersonID + ' objects');
+});
+
 
  //MARK: --------------- INITIALISE THE SERVER
-
 //init the server
-
 app.listen(port, () => {
 
   console.log(`listening on port ${port}`)
 })
-
-
-
-//MARK: Helper Functions
-
-// async function allPersons() {
-//   var connection = getConnectedDb();
-//   var uresults;
-//   await connection.query("SELECT * FROM Persons;")
-//    , function (error, results, fields) {
-//     if (error) throw error;
-//     uresults = results
-//   };
-//     connection.end();
-//     console.log(uresults);
-//   return uresults;
-// }
-
-
-
-

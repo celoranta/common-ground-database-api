@@ -68,14 +68,15 @@ const PersonName = sequelize.define('PersonName',{
     personName: {
       type: Sequelize.STRING,
       allowNull: false
-    },
-    personId: {
-      type: Sequelize.INTEGER,
-      references: {
-        model: 'people',
-        key: 'id'
-      }
     }
+    // ,
+    // personId: {
+    //   type: Sequelize.INTEGER,
+    //   references: {
+    //     model: 'people',
+    //     key: 'id'
+    //   }
+    // }
   }
 );
 

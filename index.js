@@ -230,7 +230,7 @@ app.put('/Persons', function(req, res, err) {
     return res.send('Added Person Object');
   })
 });
-app.put('/PersonNames/:PersonName', function(req, res, err) {
+app.put('/PersonNames/:PersonName/:Person', function(req, res, err) {
   PersonName
   .findOrCreate({where: {
     //PersonNameType: req.params.PersonNameType,

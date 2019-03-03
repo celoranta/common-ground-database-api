@@ -78,12 +78,12 @@ const PersonName = sequelize.define(
   }
 );
 
-Person.hasMany(PersonName);
+Person.hasMany(PersonNames);
 
 //Person.hasMany(PersonName);
 //PersonName.hasOne(PersonNameType);
 
-// force: true will drop the table if it already exists
+
 PersonNameType.sync({force: force})
 .then(() => {
   // Table created
@@ -234,7 +234,7 @@ app.put('/PersonNames/:PersonName/:Person', function(req, res, err) {
   PersonName
   .findOrCreate({where: {
     //PersonNameType: req.params.PersonNameType,
-    PersonId: req.params.Person,
+    //PersonId: req.params.Person,
     PersonName: req.params.PersonName
   }})
   .spread((personName, created) => {

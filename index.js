@@ -5,6 +5,7 @@ var env = require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
+const force = true;
 
 var app = express();
 const port = process.env.PORT;
@@ -51,8 +52,7 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-  //Model Definition
-
+//Model Definition
 const PersonNameType = sequelize.define(
   'PersonNameType', 
   {
@@ -61,15 +61,6 @@ const PersonNameType = sequelize.define(
   },
 });
   
-// force: true will drop the table if it already exists
-PersonNameType.sync({force: true}).then(() => {
-  // Table created
-  // return User.create({
-  //   firstName: 'John',
-  //   lastName: 'Hancock'
-  // });
-});
-
 const Person = sequelize.define(
   'Person', 
   {
@@ -78,10 +69,6 @@ const Person = sequelize.define(
     },
   }
 );
-
-Person.sync({force: false})
-.then(() => {
-});
 
 const PersonName = sequelize.define(
   'PersonName',
@@ -93,15 +80,24 @@ const PersonName = sequelize.define(
   }
 );
 
-
-// PersonNameType.hasMany(PersonName);
-// Person.hasMany(PersonName);
-
-
 PersonName.belongsTo(Person);
-PersonName.hasOne(PersonNameType);
+//PersonName.hasOne(PersonNameType);
 
-PersonName.sync({force: false})
+// force: true will drop the table if it already exists
+PersonNameType.sync({force: force})
+.then(() => {
+  // Table created
+  // return User.create({
+  //   firstName: 'John',
+  //   lastName: 'Hancock'
+  // });
+});
+
+PersonName.sync({force: force})
+.then(() => {
+});
+
+Person.sync({force: force})
 .then(() => {
 });
 

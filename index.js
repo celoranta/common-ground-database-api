@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const force = true;
 
+// const musicstory_consumerKey=process.env.MUSICSTORY_CONSUMER_KEY;
+// const musicstory_consumerSecret=process.env.MUSICSTORY_CONSUMER_SECRET;
+
 var app = express();
 const port = process.env.PORT;
  /* set the bodyParser to parse the urlencoded post data */
@@ -64,7 +67,7 @@ const Person = sequelize.define('Person', {
     }
   }
 );
-const PersonName = sequelize.define('PersonName',{
+const PersonName = sequelize.define('PersonName', {
     personName: {
       type: Sequelize.STRING,
       allowNull: false

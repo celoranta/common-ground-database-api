@@ -11,6 +11,8 @@ const musicStory = require('./MusicStoryAPI.class.js');
 const musicstory_consumerKey=process.env.MUSICSTORY_CONSUMER_KEY;
 const musicstory_consumerSecret=process.env.MUSICSTORY_CONSUMER_SECRET;
 
+let api = musicStory.musicStoryApi(musicstory_consumerKey,musicstory_consumerSecret,'','','');
+print(api.getToken);
 var app = express();
 const port = process.env.PORT;
  /* set the bodyParser to parse the urlencoded post data */

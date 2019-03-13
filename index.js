@@ -6,7 +6,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const force = true;
-const musicStory = require('MusicStoryAPI.class.js');
+const musicStory = require('./MusicStoryAPI.class.js');
 
 const musicstory_consumerKey=process.env.MUSICSTORY_CONSUMER_KEY;
 const musicstory_consumerSecret=process.env.MUSICSTORY_CONSUMER_SECRET;

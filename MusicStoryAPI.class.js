@@ -674,3 +674,8 @@ function init_crypto() {
 		k.HmacSHA1 = l._createHmacHelper(b)
 	})();
 }
+module.exports = {
+	musicStoryApi: function newApi(oauth_consumer_key, oauth_consumer_secret, token, token_secret, version){
+		return MusicStoryApi(oauth_consumer_key, oauth_consumer_secret, token, token_secret, version);
+}
+};

@@ -6,13 +6,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const force = true;
-const musicStory = require('./MusicStoryAPI.class.js');
+//const musicStory = require('./MusicStoryAPI.class.js');
 
-const musicstory_consumerKey=process.env.MUSICSTORY_CONSUMER_KEY;
-const musicstory_consumerSecret=process.env.MUSICSTORY_CONSUMER_SECRET;
+//const musicstory_consumerKey=process.env.MUSICSTORY_CONSUMER_KEY;
+//const musicstory_consumerSecret=process.env.MUSICSTORY_CONSUMER_SECRET;
 
-let api = musicStory.musicStoryApi(musicstory_consumerKey,musicstory_consumerSecret,'','','');
-console.log(api.getToken);
+//let api = musicStory.musicStoryApi(musicstory_consumerKey,musicstory_consumerSecret,'','','');
+//console.log(api.getToken);
 var app = express();
 const port = process.env.PORT;
  /* set the bodyParser to parse the urlencoded post data */
@@ -25,6 +25,12 @@ var connection = mysql.createConnection({
   password : process.env.MYSQL_PASSWORD,
   database : process.env.MYSQL_DATABASE
 });
+
+console.log(process.env.HOST);
+console.log(process.env.DB_USER);
+console.log(process.env.MYSQL_PASSWORD);
+console.log(process.env.MYSQL_DATABASE);
+
 connection.connect();
 
 //  connection.query(
@@ -64,12 +70,14 @@ const PersonNameType = sequelize.define('PersonNameType', {
     type: Sequelize.STRING, allowNull: false
   }
 });
-const Person = sequelize.define('Person', {
-    bufferValue: {
-      type: Sequelize.TINYINT(1)
-    }
-  }
-);
+
+// const Person = sequelize.define('Person', {
+//     bufferValue: {
+//       type: Sequelize.TINYINT(1)
+//     }
+//   }
+// );
+
 const PersonName = sequelize.define('PersonName', {
     personName: {
       type: Sequelize.STRING,
@@ -86,11 +94,6 @@ const PersonName = sequelize.define('PersonName', {
   }
 );
 
-Person.hasMany(PersonName);
-
-//Person.hasMany(PersonName);
-//PersonName.hasOne(PersonNameType);
-
 
 PersonNameType.sync({force: force})
 .then(() => {
@@ -101,13 +104,23 @@ PersonNameType.sync({force: force})
   // });
 });
 
+
+PersonNameType.belongsTo(PersonName);
+PersonName.hasOne(PersonNameType);
+
 PersonName.sync({force: force})
 .then(() => {
 });
 
-Person.sync({force: force})
-.then(() => {
-});
+// Person.sync({force: force})
+// .then(() => {
+// });
+
+// Person.hasMany(PersonName);
+
+// //Person.hasMany(PersonName);
+
+
 
 // connection.query(
 // `
@@ -196,21 +209,27 @@ app.get('/PersonNameTypes', function(req, res, err)  {
   PersonNameType.findAll()
   .then(personNameTypes => {
     console.log(personNameTypes);
-    return res.send(personNameTypes);
+    return res.send(personNameTypes)
+  })
+  .catch(function (error) {
+    console.log(error);
   });
 });
-app.get('/Persons', (req, res) => {
-  Person.findAll()
-  .then(person => {
-    console.log(person);
-    return res.send(person);
-  });
-});
+// app.get('/Persons', (req, res) => {
+//   Person.findAll()
+//   .then(person => {
+//     console.log(person);
+//     return res.send(person);
+//   });
+// });
 app.get('/PersonNames', (req, res) => {
   PersonName.findAll()
   .then(personName => {
     console.log(personName);
     return res.send(personName);
+  })
+  .catch(function (error) {
+    console.log(error);
   });
 });
 
@@ -218,9 +237,9 @@ app.get('/PersonNames', (req, res) => {
 app.put('/', (req, res) => {
   return res.send('Received a test PUT message');
 });
-app.put('/PersonNameTypes/:NameType', function(req, res, err)  {   
+app.put('/PersonNameTypes/:PersonNameType', function(req, res, err)  {   
   PersonNameType
-  .findOrCreate({where: {NameType: req.params.NameType}})
+  .findOrCreate({where: {nameType: req.params.PersonNameType}})
   .spread((personNameType, created) => {
     console.log(personNameType.get({
       plain: true
@@ -228,22 +247,20 @@ app.put('/PersonNameTypes/:NameType', function(req, res, err)  {
     return res.send('Added new object.'/* + personNameType.params.NameType*/);
   })
 });
-app.put('/Persons', function(req, res, err) {   
-  Person
-  .findOrCreate({where: {bufferValue: 1}})
-  .spread((person, created) => {
-    console.log(person.get({
-      plain: true
-    }))
-    return res.send('Added Person Object');
-  })
-});
-app.put('/PersonNames/:PersonName/:Person', function(req, res, err) {
+// app.put('/Persons', function(req, res, err) {   
+//   Person
+//   .create({bufferValue: 1})
+//   .spread((person, created) => {
+//     console.log(person.get({
+//       plain: true
+//     }))
+//     return res.send('Added Person Object');
+//   })
+// });
+app.put('/PersonNames/:PersonName', function(req, res, err) {
   PersonName
   .findOrCreate({where: {
-    //PersonNameType: req.params.PersonNameType,
-    //PersonId: req.params.Person,
-    PersonName: req.params.PersonName
+    personName: req.params.PersonName
   }})
   .spread((personName, created) => {
     console.log(personName.get({
@@ -259,10 +276,10 @@ app.post('/', (req, res) => {
   
   return res.send('Received a test POST message');
 });
-app.post('/Persons', (req, res) => {   
-  return res.send('POST method for Persons object'
-  )
-});
+// app.post('/Persons', (req, res) => {   
+//   return res.send('POST method for Persons object'
+//   )
+// });
 
 
 //MARK: Deletes

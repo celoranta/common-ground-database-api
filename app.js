@@ -18,187 +18,32 @@ const port = process.env.PORT;
  /* set the bodyParser to parse the urlencoded post data */
  app.use(bodyParser.urlencoded({ extended: true }))
 
- //Create Database
-var connection = mysql.createConnection({
-  host     : process.env.HOST,
-  user     : process.env.DB_USER,
-  password : process.env.MYSQL_PASSWORD,
-  database : process.env.MYSQL_DATABASE
+
+ //https://codehandbook.org/implement-has-many-association-in-sequelize/
+ //const Sequelize = require('sequelize');
+const sequelize = new Sequelize('seq_db', 'root', 'root', {
+  host: 'localhost',
+  dialect: 'mysql'
 });
+const models = require('./models')
 
-console.log(process.env.HOST);
-console.log(process.env.DB_USER);
-console.log(process.env.MYSQL_PASSWORD);
-console.log(process.env.MYSQL_DATABASE);
-
-connection.connect();
-
-//  connection.query(
-//   `
-//   CREATE DATABASE IF NOT EXISTS commonground;
-//   `
-//   )  , function (error, results, fields) {
-//     if (error) throw error;
-//   };
-// connection.end();
-
-const sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.DB_USER, process.env.MYSQL_PASSWORD , {
-  host: process.env.HOST,
-  dialect: 'mysql',
-  operatorsAliases: false,
-
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
-});
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
+models.UserTask.findAll({
+    raw: true,
+    attributes: [],
+    include: [
+      {
+        model: models.Task,
+        attributes: [['taskName','Task']],
+      },
+      {
+        model: models.User,
+        attributes: [['firstName','First Name'], ['lastName','Last Name']],
+      }
+    ]
   })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-
-//Model Definition
-const PersonNameType = sequelize.define('PersonNameType', {
-  nameType: {
-    type: Sequelize.STRING, allowNull: false
-  }
-});
-
-// const Person = sequelize.define('Person', {
-//     bufferValue: {
-//       type: Sequelize.TINYINT(1)
-//     }
-//   }
-// );
-
-const PersonName = sequelize.define('PersonName', {
-    personName: {
-      type: Sequelize.STRING,
-      allowNull: false
-    }
-    // ,
-    // personId: {
-    //   type: Sequelize.INTEGER,
-    //   references: {
-    //     model: 'people',
-    //     key: 'id'
-    //   }
-    // }
-  }
-);
-
-
-PersonNameType.sync({force: force})
-.then(() => {
-  // Table created
-  // return User.create({
-  //   firstName: 'John',
-  //   lastName: 'Hancock'
-  // });
-});
-
-
-PersonNameType.belongsTo(PersonName);
-PersonName.hasOne(PersonNameType);
-
-PersonName.sync({force: force})
-.then(() => {
-});
-
-// Person.sync({force: force})
-// .then(() => {
-// });
-
-// Person.hasMany(PersonName);
-
-// //Person.hasMany(PersonName);
-
-
-
-// connection.query(
-// `
-// CREATE TABLE IF NOT EXISTS EmailAddresses (
-// EmailAddressID Int NOT NULL AUTO_INCREMENT,
-// EmailAddress varchar(255),
-// PersonID Int NOT NULL,
-// CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-// PRIMARY KEY (EmailAddressID),
-// FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
-// );
-// `
-// )  , function (error, results, fields) {
-//   if (error) throw error;
-// };
-
-// connection.query(
-// `
-// CREATE TABLE IF NOT EXISTS Acts (
-// ActID Int NOT NULL AUTO_INCREMENT,
-// ActName varchar(255),
-// CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-// PRIMARY KEY (ActID)
-// );
-// `
-// )  , function (error, results, fields) {
-//   if (error) throw error;
-// };
-
-// connection.query(
-// `
-// CREATE TABLE IF NOT EXISTS Clearances (
-// ClearanceID Int NOT NULL AUTO_INCREMENT,
-// ClearanceName varchar(255),
-// CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-// PRIMARY KEY (ClearanceID)
-// );
-// `
-// )  , function (error, results, fields) {
-//   if (error) throw error;
-// };
-
-// connection.query(
-// `
-// CREATE TABLE IF NOT EXISTS Memberships (
-// MembershipID Int NOT NULL AUTO_INCREMENT,
-// PersonID Int NOT NULL,
-// ActID Int NOT NULL,
-// ClearanceID Int NOT NULL,
-// CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-// PRIMARY KEY (MembershipID),
-// FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
-// FOREIGN KEY (ActID) REFERENCES Acts(ActID),
-// FOREIGN KEY (ClearanceID) REFERENCES Clearances(ClearanceID)
-// );
-// `
-// )  , function (error, results, fields) {
-//   if (error) throw error;
-// };
-
-// connection.query(
-// `
-// CREATE TABLE IF NOT EXISTS BandContactInfo (
-// ID int NOT NULL AUTO_INCREMENT,
-// CityName varchar(255),
-// StateOrProvince varChar(255),
-// PhoneNumber varChar(255),
-// EmailAddress varChar(255),
-// PRIMARY KEY (ID)
-// );
-// `
-// )  , function (error, results, fields) {
-//   if (error) throw error;
-// };
- 
-// connection.end();
-
-//MARK: Define API Endpoints
+.then(function(result){
+  console.log(result)
+})
 
 //MARK: Gets
 
@@ -206,7 +51,8 @@ app.get('/', (req, res) => {
   return res.send('Received a test GET message');
 });
 app.get('/PersonNameTypes', function(req, res, err)  {   
-  PersonNameType.findAll()
+  models.PersonNameType
+  .findAll()
   .then(personNameTypes => {
     console.log(personNameTypes);
     return res.send(personNameTypes)
@@ -215,15 +61,10 @@ app.get('/PersonNameTypes', function(req, res, err)  {
     console.log(error);
   });
 });
-// app.get('/Persons', (req, res) => {
-//   Person.findAll()
-//   .then(person => {
-//     console.log(person);
-//     return res.send(person);
-//   });
-// });
+
 app.get('/PersonNames', (req, res) => {
-  PersonName.findAll()
+  models.PersonName
+  .findAll()
   .then(personName => {
     console.log(personName);
     return res.send(personName);
@@ -234,11 +75,8 @@ app.get('/PersonNames', (req, res) => {
 });
 
 //MARK: Puts
-app.put('/', (req, res) => {
-  return res.send('Received a test PUT message');
-});
 app.put('/PersonNameTypes/:PersonNameType', function(req, res, err)  {   
-  PersonNameType
+  models.PersonNameType
   .findOrCreate({where: {nameType: req.params.PersonNameType}})
   .spread((personNameType, created) => {
     console.log(personNameType.get({
@@ -247,18 +85,9 @@ app.put('/PersonNameTypes/:PersonNameType', function(req, res, err)  {
     return res.send('Added new object.'/* + personNameType.params.NameType*/);
   })
 });
-// app.put('/Persons', function(req, res, err) {   
-//   Person
-//   .create({bufferValue: 1})
-//   .spread((person, created) => {
-//     console.log(person.get({
-//       plain: true
-//     }))
-//     return res.send('Added Person Object');
-//   })
-// });
-app.put('/PersonNames/:PersonName', function(req, res, err) {
-  PersonName
+
+app.put('/PersonNames/:PersonName/:PersonNameType', function(req, res, err) {
+  models.PersonName
   .findOrCreate({where: {
     personName: req.params.PersonName
   }})
@@ -270,27 +99,10 @@ app.put('/PersonNames/:PersonName', function(req, res, err) {
   })
 });
 
-
 //MARK: Posts
 app.post('/', (req, res) => {
-  
   return res.send('Received a test POST message');
 });
-// app.post('/Persons', (req, res) => {   
-//   return res.send('POST method for Persons object'
-//   )
-// });
-
-
-//MARK: Deletes
-app.delete('/', (req, res) => {
-  
-  return res.send('Received a test DELETE message');
-});
-app.delete('/Persons/:PersonID', (req, res) => {   
-  return res.send('DELETE method for Person ' + req.params.PersonID + ' objects');
-});
-
 
  //MARK: --------------- INITIALISE THE SERVER
 //init the server

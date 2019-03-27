@@ -6,56 +6,19 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 
-var app = express();
-
-//const modules = path.dirname('/modules');
-
-app.use(bodyParser.urlencoded({ extended: true }))
-
+var spotifyHandler = require('./modules/spotifyHandler.js')
 var db = require('./modules/pool.js');
 require('./modules/databaseSetup.js');
 
+var app = express();
+app.use(bodyParser.urlencoded({ extended: true }))
+
+
+
 //MARK: Define API Endpoints
-
-//MARK: Puts
-// app.put('/PersonNameTypes/:NameType', function (req, res, err) {
-//   // PersonNameType
-//   // .findOrCreate({where: {NameType: req.params.NameType}})
-//   // .spread((personNameType, created) => {
-//   //   console.log(personNameType.get({
-//   //     plain: true
-//   //   }))
-//   //   return res.send('Added new object.'/* + personNameType.params.NameType*/);
-//   // })
-// });
-// app.put('/Persons', function(req, res, err) {   
-//   Person
-//   .findOrCreate({where: {bufferValue: 1}})
-//   .spread((person, created) => {
-//     console.log(person.get({
-//       plain: true
-//     }))
-//     return res.send('Added Person Object');
-//   })
-// });
-// app.put('/PersonNames/:PersonName/:Person', function(req, res, err) {
-//   PersonName
-//   .findOrCreate({where: {
-//     //PersonNameType: req.params.PersonNameType,
-//     //PersonId: req.params.Person,
-//     PersonName: req.params.PersonName
-//   }})
-//   .spread((personName, created) => {
-//     console.log(personName.get({
-//       plain: true
-//     }))
-//     return res.send('Added PersonName Object');
-//   })
-// });
-
 //MARK: Posts
 
-app.post('/PersonNameTypes/:personNameType', (req, res) => {
+app.post('/PersonNameTypes/:personNameType', (req, res, err) => {
   console.log('received value: ' + req.params.personNameType)
   db.query(
     `INSERT INTO PersonNameTypes (personNameTypeString) ` +
@@ -64,29 +27,28 @@ app.post('/PersonNameTypes/:personNameType', (req, res) => {
     + `');`
   )
     .then(response => {
+      return res.send(response)
     })
-  return res.send(
-  )
+    .catch(err)
 });
 
-app.post('/Persons', (req, res) => {
+app.post('/Persons', (req, res, err) => {
   console.log('received value: ' + req.params.personNameType)
   db.query(
     'INSERT INTO Persons () ' +
     'VALUES ();'
   )
-  .then(response => {
-
-  })
-  return res.send(
-  )
+    .then(response => {
+      return res.send(response)
+    })
+    .catch(err)
 });
 
-app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res) => {
+app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res, err) => {
   console.log('received Values: ' + req.params.personNameString + ", " + req.params.personNameTypeId + ", " + req.params.personId)
   db.query(
-    'INSERT INTO PersonNames (personNameString, personNameTypeId, personId) ' 
-    + `VALUES ('` 
+    'INSERT INTO PersonNames (personNameString, personNameTypeId, personId) '
+    + `VALUES ('`
     + req.params.personNameString
     + `', '`
     + req.params.personNameTypeId
@@ -94,18 +56,14 @@ app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res
     + req.params.personId
     + `');`
   )
-  .then(response => {
-
-  })
-  return res.send(
-  )
+    .then(response => {
+      return res.send(response)
+    })
+    .catch(err)
 });
 
 //MARK: Gets
 
-// app.get('/', (req, res) => {
-//   return res.send('Received a test GET message');
-// });
 app.get('/PersonNameTypes', function (req, res, err) {
   db.query('SELECT * FROM PersonNameTypes').then(rows => {
     console.log(rows);
@@ -120,33 +78,37 @@ app.get('/PersonNames', function (req, res, err) {
   })
     .catch(err)
 });
-app.get('/Persons', (req, res) => {
+app.get('/Persons', (req, res, err) => {
   db.query('SELECT * FROM Persons')
     .then(rows => {
       console.log(rows);
       return res.send(rows)
     })
-    .catch(res.err)
+    .catch(err)
 });
-// });
-// app.get('/PersonNames', (req, res) => {
-//   PersonName.findAll()
-//   .then(personName => {
-//     console.log(personName);
-//     return res.send(personName);
-//   });
-// });
 
-//MARK: Deletes
-// app.delete('/', (req, res) => {
+app.get('/PersonNamesList', (req, res, err) => {
+  db.query(
+    `
+SELECT PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString
+FROM Persons
+INNER JOIN PersonNames
+ON PersonNames.PersonId=Persons.id
+INNER JOIN PersonNameTypes
+ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
+`
+  )
+    .then(rows => {
+      console.log(rows);
+      return res.send(rows)
+    })
+    .catch(err)
+})
 
-//   return res.send('Received a test DELETE message');
-// });
-// app.delete('/Persons/:PersonID', (req, res) => {   
-//   return res.send('DELETE method for Person ' + req.params.PersonID + ' objects');
-// });
+
+
 
 //MARK: Launch the Server
 app.listen(process.env.PORT, () => {
   console.log(`listening on port ${process.env.PORT}`)
-})
+});

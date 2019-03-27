@@ -21,7 +21,7 @@ db.pool.query(
     personNameString varchar(255),
     personNameTypeId Int,
     personId Int,
-    createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (personNameTypeId) REFERENCES PersonNameTypes(id),

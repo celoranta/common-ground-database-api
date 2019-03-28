@@ -57,42 +57,43 @@ async function apiCall(endpoint) {
     console.log('Using auth: ' + tokenizedAuth)
     console.log('To URL: ' + fullPath)
     // GET request for remote image
-axios({
-    'method': 'get',
-    'url': fullPath,
-    'responseType': 'JSON',
-    'headers' : {
-    'Authorization': 'Bearer ' + validToken
+    axios({
+        'method': 'get',
+        'url': fullPath,
+        'responseType': 'JSON',
+        'headers': {
+            'Authorization': 'Bearer ' + validToken
+        }
     }
-    }
-  ).then((result) => {
-      const resultData = util.inspect(result.data)
-    console.log('Spotify Responded With: ' + resultData)})
-    //return resultData
-    .catch((err)=>{console.log(err)})
-  };
+    ).then((result) => {
+        const resultData = util.inspect(result.data)
+        console.log('Spotify Responded With: ' + resultData)
+    })
+        //return resultData
+        .catch((err) => { console.log(err) })
+};
 
-  function search(query, type){
+function search(query, type, market, limit, offset, include_external) {
     const endpoint = '/search?'
-    const validTypes = ['album','artist','playlist', 'track']
+    const validTypes = ['album', 'artist', 'playlist', 'track']
     const test = `q=` + query + `&type=` + type
     const testURI = endpoint + test
     apiCall(testURI)
-  }
+}
 
-//   q	Required. 
-//   Search query keywords and optional field filters and operators. 
-//   For example: 
-//   q=roadhouse%20blues.
-//   type	Required. 
-//   A comma-separated list of item types to search across. 
-//   Valid types are: album , artist, playlist, and track. 
-//   Search results include hits from all the specified item types. 
-//   For example: q=name:abacab&type=album,track returns both albums 
-//   and tracks with “abacab” included in their name.
-search('blue+jupiter','artist');
+function analysis(trackId){
+    const endpoint = '/audio-analysis/'
+    const uri = endpoint + trackId
+    apiCall(uri)
+}
+
+analysis('4zXvB4MoQD8onk0NCZbeHG')
+
+exports.search = (query, type, market, limit, offset, include_external) => {
+    search(query, type, market, limit, offset, include_external)
+}
 
 exports.call = (endpoint) => {
-apiCall(endpoint)
+    apiCall(endpoint)
 }
 

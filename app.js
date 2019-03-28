@@ -14,7 +14,6 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-
 //MARK: Define API Endpoints
 //MARK: Posts
 
@@ -63,7 +62,6 @@ app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res
 });
 
 //MARK: Gets
-
 app.get('/PersonNameTypes', function (req, res, err) {
   db.query('SELECT * FROM PersonNameTypes').then(rows => {
     console.log(rows);
@@ -89,7 +87,7 @@ app.get('/Persons', (req, res, err) => {
 
 app.get('/PersonNamesList', (req, res, err) => {
   db.query(
-    `
+`
 SELECT PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString
 FROM Persons
 INNER JOIN PersonNames
@@ -106,7 +104,7 @@ ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
 })
 
 //spotifyHandler.call('/tracks/2TpxZ7JUBn3uw46aR7qd6V')
-
+//spotifyHandler.search('sweet', 'track');
 
 //MARK: Launch the Server
 app.listen(process.env.PORT, () => {

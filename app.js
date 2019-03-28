@@ -105,7 +105,7 @@ ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
     .catch(err)
 })
 
-
+//spotifyHandler.call('/tracks/2TpxZ7JUBn3uw46aR7qd6V')
 
 
 //MARK: Launch the Server

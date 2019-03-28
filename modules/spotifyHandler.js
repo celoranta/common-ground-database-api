@@ -48,17 +48,7 @@ var validOrNewToken = new Promise(
     }
 )
 
-// var getValidOrNewToken = function () {
-//     validOrNewToken
-//         .then(function (fulfilled) {
-//             return fulfilled
-//         })
-//         .catch(function (error) {
-//             console.log(error.message)
-//         })
-// }
-
-async function apiCall2(endpoint) {
+async function apiCall(endpoint) {
     validToken = await validOrNewToken;
     var url = 'https://api.spotify.com/v1'
     var fullPath = url + endpoint
@@ -76,16 +66,33 @@ axios({
     }
     }
   ).then((result) => {
-    console.log('Spotify Responded With: ' + util.inspect(result.data))})
+      const resultData = util.inspect(result.data)
+    console.log('Spotify Responded With: ' + resultData)})
+    //return resultData
     .catch((err)=>{console.log(err)})
   };
 
+  function search(query, type){
+    const endpoint = '/search?'
+    const validTypes = ['album','artist','playlist', 'track']
+    const test = `q=` + query + `&type=` + type
+    const testURI = endpoint + test
+    apiCall(testURI)
+  }
 
-let ugh = ()=> {
-apiCall2('/tracks/2TpxZ7JUBn3uw46aR7qd6V')
-// .then(console.log('Success??'))
-// .catch((err)=>{console.log(err)})
+//   q	Required. 
+//   Search query keywords and optional field filters and operators. 
+//   For example: 
+//   q=roadhouse%20blues.
+//   type	Required. 
+//   A comma-separated list of item types to search across. 
+//   Valid types are: album , artist, playlist, and track. 
+//   Search results include hits from all the specified item types. 
+//   For example: q=name:abacab&type=album,track returns both albums 
+//   and tracks with “abacab” included in their name.
+search('blue+jupiter','artist');
+
+exports.call = (endpoint) => {
+apiCall(endpoint)
 }
 
-ugh();
-//curl -H "Authorization: Bearer NgCXRKc...MzYjw" https://api.spotify.com/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V

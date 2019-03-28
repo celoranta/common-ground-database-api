@@ -87,7 +87,9 @@ function analysis(trackId){
     apiCall(uri)
 }
 
-analysis('4zXvB4MoQD8onk0NCZbeHG')
+
+
+//analysis('4zXvB4MoQD8onk0NCZbeHG')
 
 exports.search = (query, type, market, limit, offset, include_external) => {
     search(query, type, market, limit, offset, include_external)

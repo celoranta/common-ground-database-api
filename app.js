@@ -103,6 +103,17 @@ ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
     .catch(err)
 })
 
+//Spotify User Authorization Boilerplate
+app.get('/login', function(req, res) {
+  var scopes = 'user-read-private user-read-email';
+  var redirect_uri = 'https://www.commongroundband.ca/'
+  res.redirect('https://accounts.spotify.com/authorize' +
+    '?response_type=code' +
+    '&client_id=' + process.env.SPOTIFY_APP_CLIENT_ID +
+    (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+    '&redirect_uri=' + encodeURIComponent(redirect_uri));
+  });
+
 //spotifyHandler.call('/tracks/2TpxZ7JUBn3uw46aR7qd6V')
 //spotifyHandler.search('sweet', 'track');
 

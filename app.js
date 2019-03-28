@@ -110,5 +110,5 @@ ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
 
 //MARK: Launch the Server
 app.listen(process.env.PORT, () => {
-  console.log(`listening on port ${process.env.PORT}`)
+  console.log(`API server is listening on port ${process.env.PORT}`)
 });

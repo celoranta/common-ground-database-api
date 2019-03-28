@@ -45,6 +45,24 @@ db.pool.query(
     if (error) throw error;
 }
 
+db.pool.query(
+    `
+    CREATE TABLE IF NOT EXISTS SpotifyTokens (
+    id Int NOT NULL AUTO_INCREMENT,
+    token varchar(255) NOT NULL,
+    expiresAt varchar(255) NOT NULL,
+    createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+    );
+    `
+), function (error, results, fields) {
+    if (error) throw error;
+}
+
+
+
+
 // db.pool.query(
 //     `
 //     INSERT INTO PersonNameTypes 

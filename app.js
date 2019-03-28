@@ -103,7 +103,7 @@ ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
     .catch(err)
 })
 
-//Spotify User Authorization Boilerplate
+//Spotify User Authorization 
 app.get('/login', function(req, res) {
   var scopes = 'user-read-private user-read-email';
   var redirect_uri = 'https://www.commongroundband.ca/'
@@ -114,6 +114,8 @@ app.get('/login', function(req, res) {
     '&redirect_uri=' + encodeURIComponent(redirect_uri));
   });
 
+
+  
 //spotifyHandler.call('/tracks/2TpxZ7JUBn3uw46aR7qd6V')
 //spotifyHandler.search('sweet', 'track');
 

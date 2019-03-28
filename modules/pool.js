@@ -37,6 +37,36 @@ function query(sql, args) {
 };
 
 
+let postDbToken = (token, expiresAt) => {
+    query(
+    `
+    INSERT INTO SpotifyTokens (token, expiresAt)
+    VALUES ("` + token + `", "` + expiresAt + `");`
+    )
+}
+
+let getDbToken = () => {
+    return new Promise((resolve, reject) => {
+        const sql =     `
+        SELECT token, expiresAt
+        FROM SpotifyTokens
+        WHERE createAt = (SELECT MAX(createAt) FROM SpotifyTokens)
+        `
+    pool.query(sql, {}, (err, rows) => {
+        if (err)
+        return reject(err);
+        var data = JSON.stringify(rows)
+        console.log('Retrieved most recent Token from SQL');
+        resolve(rows);
+      })
+    })
+    };
+
+
+exports.postDbToken = postDbToken;
+exports.getDbToken = getDbToken;
+
+
 
 module.exports.query = query;
 module.exports.pool = pool;

@@ -76,6 +76,7 @@ app.get('/PersonNames', function (req, res, err) {
   })
     .catch(err)
 });
+
 app.get('/Persons', (req, res, err) => {
   db.query('SELECT * FROM Persons')
     .then(rows => {
@@ -87,7 +88,7 @@ app.get('/Persons', (req, res, err) => {
 
 app.get('/PersonNamesList', (req, res, err) => {
   db.query(
-`
+    `
 SELECT PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString
 FROM Persons
 INNER JOIN PersonNames
@@ -103,8 +104,30 @@ ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
     .catch(err)
 })
 
+app.get('/SpotifySearchTest/:query/:type', function (req, res, err) {
+
+  let x = spotifyHandler.search(req.params.query, req.params.type)
+  x
+    .then((rows) => {
+      console.log("Search Results: " + rows);
+      return res.send(rows)
+    })
+    .catch(err)
+});
+
+app.get('/SpotifyAnalyzeTrackId/:trackId', function (req, res, err) {
+
+  let x = spotifyHandler.analyze(req.params.trackId)
+  x
+    .then((rows) => {
+      console.log("Analysis Results: " + rows);
+      return res.send(rows)
+    })
+    .catch(err)
+});
+
 //Spotify User Authorization 
-app.get('/login', function(req, res) {
+app.get('/login', function (req, res) {
   var scopes = 'user-read-private user-read-email';
   var redirect_uri = 'https://www.commongroundband.ca/'
   res.redirect('https://accounts.spotify.com/authorize' +
@@ -112,10 +135,10 @@ app.get('/login', function(req, res) {
     '&client_id=' + process.env.SPOTIFY_APP_CLIENT_ID +
     (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
     '&redirect_uri=' + encodeURIComponent(redirect_uri));
-  });
+});
 
 
-  
+
 //spotifyHandler.call('/tracks/2TpxZ7JUBn3uw46aR7qd6V')
 //spotifyHandler.search('sweet', 'track');
 

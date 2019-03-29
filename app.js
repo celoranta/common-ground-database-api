@@ -6,9 +6,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 
+
 var spotifyHandler = require('./modules/spotifyHandler.js')
 var db = require('./modules/pool.js');
 require('./modules/databaseSetup.js');
+var server = require('./modules/server.js')
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -104,10 +106,10 @@ ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
     .catch(err)
 })
 
+//Spotify API Calls
 app.get('/SpotifySearchTest/:query/:type', function (req, res, err) {
-
-  let x = spotifyHandler.search(req.params.query, req.params.type)
-  x
+  let searchPromise = spotifyHandler.search(req.params.query, req.params.type)
+  searchPromise
     .then((rows) => {
       console.log("Search Results: " + rows);
       return res.send(rows)
@@ -116,9 +118,8 @@ app.get('/SpotifySearchTest/:query/:type', function (req, res, err) {
 });
 
 app.get('/SpotifyAnalyzeTrackId/:trackId', function (req, res, err) {
-
-  let x = spotifyHandler.analyze(req.params.trackId)
-  x
+  let analyzePromise = spotifyHandler.analyze(req.params.trackId)
+  analyzePromise
     .then((rows) => {
       console.log("Analysis Results: " + rows);
       return res.send(rows)
@@ -129,7 +130,7 @@ app.get('/SpotifyAnalyzeTrackId/:trackId', function (req, res, err) {
 //Spotify User Authorization 
 app.get('/login', function (req, res) {
   var scopes = 'user-read-private user-read-email';
-  var redirect_uri = 'https://www.commongroundband.ca/'
+  var redirect_uri = 'localhost:8000/callback'
   res.redirect('https://accounts.spotify.com/authorize' +
     '?response_type=code' +
     '&client_id=' + process.env.SPOTIFY_APP_CLIENT_ID +
@@ -137,11 +138,10 @@ app.get('/login', function (req, res) {
     '&redirect_uri=' + encodeURIComponent(redirect_uri));
 });
 
-
-
-//spotifyHandler.call('/tracks/2TpxZ7JUBn3uw46aR7qd6V')
-//spotifyHandler.search('sweet', 'track');
-
+app.get('/SpotifyUserAuthCallback/:code/:state', function (req, res) {
+console.log(req.params.code);
+console.log(req.params.state)
+})
 //MARK: Launch the Server
 app.listen(process.env.PORT, () => {
   console.log(`API server is listening on port ${process.env.PORT}`)

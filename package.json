@@ -2,10 +2,9 @@
   "name": "database-app",
   "version": "1.0.0",
   "description": "common ground website server app",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "author": "Chris Eloranta",
   "license": "ISC",

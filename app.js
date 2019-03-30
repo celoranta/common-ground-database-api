@@ -4,109 +4,146 @@ var mysql = require('mysql2');
 var env = require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
-const Sequelize = require('sequelize');
-const force = true;
-//const musicStory = require('./MusicStoryAPI.class.js');
+var path = require('path');
 
-//const musicstory_consumerKey=process.env.MUSICSTORY_CONSUMER_KEY;
-//const musicstory_consumerSecret=process.env.MUSICSTORY_CONSUMER_SECRET;
 
-//let api = musicStory.musicStoryApi(musicstory_consumerKey,musicstory_consumerSecret,'','','');
-//console.log(api.getToken);
+//var spotifyHandler = require('./modules/spotifyHandler.js')
+var db = require('./modules/pool.js');
+require('./modules/databaseSetup.js');
+var server = require('./modules/server.js')
+var musicStory = require('./modules/musicStoryHandler.js')
+
 var app = express();
-const port = process.env.PORT;
- /* set the bodyParser to parse the urlencoded post data */
- app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 
- //https://codehandbook.org/implement-has-many-association-in-sequelize/
- //const Sequelize = require('sequelize');
-const sequelize = new Sequelize('seq_db', 'root', 'root', {
-  host: 'localhost',
-  dialect: 'mysql'
+//MARK: Define API Endpoints
+//MARK: Posts
+
+app.post('/PersonNameTypes/:personNameType', (req, res, err) => {
+  console.log('received value: ' + req.params.personNameType)
+  db.query(
+    `INSERT INTO PersonNameTypes (personNameTypeString) ` +
+    `VALUES ('` +
+    req.params.personNameType
+    + `');`
+  )
+    .then(response => {
+      return res.send(response)
+    })
+    .catch(err)
 });
-const models = require('./models')
 
-models.UserTask.findAll({
-    raw: true,
-    attributes: [],
-    include: [
-      {
-        model: models.Task,
-        attributes: [['taskName','Task']],
-      },
-      {
-        model: models.User,
-        attributes: [['firstName','First Name'], ['lastName','Last Name']],
-      }
-    ]
-  })
-.then(function(result){
-  console.log(result)
-})
+app.post('/Persons', (req, res, err) => {
+  console.log('received value: ' + req.params.personNameType)
+  db.query(
+    'INSERT INTO Persons () ' +
+    'VALUES ();'
+  )
+    .then(response => {
+      return res.send(response)
+    })
+    .catch(err)
+});
+
+app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res, err) => {
+  console.log('received Values: ' + req.params.personNameString + ", " + req.params.personNameTypeId + ", " + req.params.personId)
+  db.query(
+    'INSERT INTO PersonNames (personNameString, personNameTypeId, personId) '
+    + `VALUES ('`
+    + req.params.personNameString
+    + `', '`
+    + req.params.personNameTypeId
+    + `', '`
+    + req.params.personId
+    + `');`
+  )
+    .then(response => {
+      return res.send(response)
+    })
+    .catch(err)
+});
 
 //MARK: Gets
-
-app.get('/', (req, res) => {
-  return res.send('Received a test GET message');
-});
-app.get('/PersonNameTypes', function(req, res, err)  {   
-  models.PersonNameType
-  .findAll()
-  .then(personNameTypes => {
-    console.log(personNameTypes);
-    return res.send(personNameTypes)
+app.get('/PersonNameTypes', function (req, res, err) {
+  db.query('SELECT * FROM PersonNameTypes').then(rows => {
+    console.log(rows);
+    return res.send(rows)
   })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .catch(err)
 });
-
-app.get('/PersonNames', (req, res) => {
-  models.PersonName
-  .findAll()
-  .then(personName => {
-    console.log(personName);
-    return res.send(personName);
+app.get('/PersonNames', function (req, res, err) {
+  db.query('SELECT * FROM PersonNames').then(rows => {
+    console.log(rows);
+    return res.send(rows)
   })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .catch(err)
 });
 
-//MARK: Puts
-app.put('/PersonNameTypes/:PersonNameType', function(req, res, err)  {   
-  models.PersonNameType
-  .findOrCreate({where: {nameType: req.params.PersonNameType}})
-  .spread((personNameType, created) => {
-    console.log(personNameType.get({
-      plain: true
-    }))
-    return res.send('Added new object.'/* + personNameType.params.NameType*/);
-  })
+app.get('/Persons', (req, res, err) => {
+  db.query('SELECT * FROM Persons')
+    .then(rows => {
+      console.log(rows);
+      return res.send(rows)
+    })
+    .catch(err)
 });
 
-app.put('/PersonNames/:PersonName/:PersonNameType', function(req, res, err) {
-  models.PersonName
-  .findOrCreate({where: {
-    personName: req.params.PersonName
-  }})
-  .spread((personName, created) => {
-    console.log(personName.get({
-      plain: true
-    }))
-    return res.send('Added PersonName Object');
-  })
-});
-
-//MARK: Posts
-app.post('/', (req, res) => {
-  return res.send('Received a test POST message');
-});
-
- //MARK: --------------- INITIALISE THE SERVER
-//init the server
-app.listen(port, () => {
-
-  console.log(`listening on port ${port}`)
+app.get('/PersonNamesList', (req, res, err) => {
+  db.query(
+    `
+SELECT PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString
+FROM Persons
+INNER JOIN PersonNames
+ON PersonNames.PersonId=Persons.id
+INNER JOIN PersonNameTypes
+ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
+`
+  )
+    .then(rows => {
+      console.log(rows);
+      return res.send(rows)
+    })
+    .catch(err)
 })
+
+//Spotify API Calls
+app.get('/SpotifySearchTest/:query/:type', function (req, res, err) {
+  let searchPromise = spotifyHandler.search(req.params.query, req.params.type)
+  searchPromise
+    .then((rows) => {
+      console.log("Search Results: " + rows);
+      return res.send(rows)
+    })
+    .catch(err)
+});
+
+app.get('/SpotifyAnalyzeTrackId/:trackId', function (req, res, err) {
+  let analyzePromise = spotifyHandler.analyze(req.params.trackId)
+  analyzePromise
+    .then((rows) => {
+      console.log("Analysis Results: " + rows);
+      return res.send(rows)
+    })
+    .catch(err)
+});
+
+//Spotify User Authorization 
+app.get('/login', function (req, res) {
+  var scopes = 'user-read-private user-read-email';
+  var redirect_uri = 'localhost:8000/callback'
+  res.redirect('https://accounts.spotify.com/authorize' +
+    '?response_type=code' +
+    '&client_id=' + process.env.SPOTIFY_APP_CLIENT_ID +
+    (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+    '&redirect_uri=' + encodeURIComponent(redirect_uri));
+});
+
+app.get('/SpotifyUserAuthCallback/:code/:state', function (req, res) {
+console.log(req.params.code);
+console.log(req.params.state)
+})
+//MARK: Launch the Server
+app.listen(process.env.PORT, () => {
+  console.log(`API server is listening on port ${process.env.PORT}`)
+});

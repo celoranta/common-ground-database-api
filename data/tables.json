@@ -1,0 +1,5 @@
+{
+    "queryStrings" : [
+  "CREATE TABLE IF NOT EXISTS PersonNameTypes (id Int NOT NULL AUTO_INCREMENT, personNameTypeString varchar(255),createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY (id));"
+]
+}

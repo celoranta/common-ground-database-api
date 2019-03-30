@@ -35,3 +35,50 @@ console.log("Base-64 encoded signature: " + sig);
 var request = 'http://api.music-story.com/oauth/request_token?oauth_consumer_key=' + oauth_consumer_key + '&oauth_signature=' + sig;
 console.log("Complete HTTP request: " + request);
 
+const config = {
+    headers: {
+        //'Content-Type': 'application/x-www-form-urlencoded',
+      //  'Authorization': 'Basic ' + spotifyAuthString,
+      Accepts: 'application/JSON'
+    },
+    // transformRequest: [function (data, headers) {
+    //     return formurlencoded(data);
+    // }]
+};
+
+const requestBody = {
+
+}
+function validOrNewToken() {
+    return new Promise(
+        function (resolve, reject) {
+            if (expirationDate < new Date() || token == null) {
+                //console.log('No valid token in cache.  Requesting new token from Spotify')
+                axios.get(request, requestBody, config)
+                    .then((result) => {
+                        //token = result.data.access_token
+                        console.log(result.data)
+                        //var expiresIn = result.data.expires_in
+                        //var dt = new Date();
+                        //dt.setSeconds(dt.getSeconds() + expiresIn - 300);
+                        //expirationDate = dt;
+                        //console.log('New Spotify Serverside Token Returned: ' + token);
+                        //console.log('Expires at: ' + expirationDate);
+                        //db.postDbToken(token, expirationDate)
+                        //resolve(token)
+                        resolve(result.data)
+                    })
+                    .catch((err) => {
+                        token = null
+                        console.log(err)
+                        reject(err)
+                    })
+            }
+            else {
+                //console.log('Using existing token. ')
+                resolve(token)
+            }
+        })
+}
+
+validOrNewToken();

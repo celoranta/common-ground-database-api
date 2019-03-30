@@ -14,12 +14,14 @@
     "dotenv": "^6.2.0",
     "env": "0.0.2",
     "form-urlencoded": "^3.0.0",
+    "jssha": "^2.3.1",
     "mysql2": "^1.6.5",
     "passport": "^0.4.0",
     "passport-oauth2-client-password": "^0.1.2",
     "path": "^0.12.7",
     "sequelize": "^4.42.1",
-    "sql-template-strings": "^2.2.2"
+    "sql-template-strings": "^2.2.2",
+    "utf8": "^3.0.0"
   },
   "repository": {
     "type": "git",

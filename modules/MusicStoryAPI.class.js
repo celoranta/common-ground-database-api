@@ -1,14 +1,19 @@
+var env = require('dotenv').config()
+
 // comment these lines if crypto library is already included
 var CryptoJS;
 init_crypto();
 
-/**
- * MusicStory API Pseudo-Class
- * @param string oauth_consumer_key Your consumer key
- * @param string oauth_consumer_secret Your consumer secret
- * @param string token Your token, facultative
- * @param string oauth_token_secret Your token secret, facultative
- */
+// /**
+//  * MusicStory API Pseudo-Class
+//  * @param string oauth_consumer_key Your consumer key
+//  * @param string oauth_consumer_secret Your consumer secret
+//  * @param string token Your token, facultative
+//  * @param string oauth_token_secret Your token secret, facultative
+//  */
+const oauth_consumer_key = process.env.MUSICSTORY_CONSUMER_KEY
+const oauth_consumer_secret = MUSICSTORY_CONSUMER_SECRET
+
 function MusicStoryApi(oauth_consumer_key, oauth_consumer_secret, token, token_secret, version) {
 
 	var _this = this;

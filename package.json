@@ -9,8 +9,10 @@
   "author": "Chris Eloranta",
   "license": "ISC",
   "dependencies": {
+    "ajax": "0.0.4",
     "axios": "^0.18.0",
     "base-64": "^0.1.0",
+    "dot-object": "^1.7.1",
     "dotenv": "^6.2.0",
     "env": "0.0.2",
     "form-urlencoded": "^3.0.0",
@@ -21,7 +23,9 @@
     "path": "^0.12.7",
     "sequelize": "^4.42.1",
     "sql-template-strings": "^2.2.2",
-    "utf8": "^3.0.0"
+    "utf8": "^3.0.0",
+    "xml-js": "^1.6.11",
+    "xml2js": "^0.4.19"
   },
   "repository": {
     "type": "git",

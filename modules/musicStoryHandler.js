@@ -1,3 +1,5 @@
+const convert = require('xml-js');
+const xml2js = require ('xml2js');
 const env = require('dotenv').config()
 const utf8 = require('utf8')
 const axios = require('axios');
@@ -5,6 +7,7 @@ const jsSHA = require('jssha')
 //const formurlencoded = require('form-urlencoded').default;
 //var util = require('util') //Allow for circular refs in rturned json
 var db = require('./pool.js');
+
 
 var token = null;
 var expirationDate = new Date();
@@ -15,7 +18,7 @@ const oauth_consumer_secret = process.env.MUSICSTORY_CONSUMER_SECRET
 const httpString = 'http://'
 const baseUrl = 'api.music-story.com';
 const authURI = '/oauth/request_token';
-const fullURL = httpString + baseUrl + authURI 
+const fullURL = httpString + baseUrl + authURI
 const authCallMethod = 'GET'
 
 var params = "oauth_consumer_key=" + oauth_consumer_key//Could add ternary with token_secret
@@ -38,8 +41,8 @@ console.log("Complete HTTP request: " + request);
 const config = {
     headers: {
         //'Content-Type': 'application/x-www-form-urlencoded',
-      //  'Authorization': 'Basic ' + spotifyAuthString,
-      Accepts: 'application/JSON'
+        //  'Authorization': 'Basic ' + spotifyAuthString,
+        Accepts: 'application/JSON'
     },
     // transformRequest: [function (data, headers) {
     //     return formurlencoded(data);
@@ -57,7 +60,7 @@ function validOrNewToken() {
                 axios.get(request, requestBody, config)
                     .then((result) => {
                         //token = result.data.access_token
-                        console.log(result.data)
+                        // console.log(result.data)
                         //var expiresIn = result.data.expires_in
                         //var dt = new Date();
                         //dt.setSeconds(dt.getSeconds() + expiresIn - 300);
@@ -81,4 +84,21 @@ function validOrNewToken() {
         })
 }
 
-validOrNewToken();
+
+validOrNewToken()
+    .then(
+        (result) => {
+            // var result1 = convert.xml2json(result, { compact: false, spaces: 4 });
+            var parseString = xml2js.parseString;
+            var xml = result;
+             parseString(xml, function (err, result2) {
+               // console.dir(result2);
+                token = result2.root.data[0].token[0];
+                let tokenSecret = result2.root.data[0].token_secret[0];
+                console.log(token);
+                console.log(tokenSecret);
+                //console.log(result2.root.data.token_secret);
+});
+           // console.log(result1);            
+        }
+    )

@@ -7,11 +7,11 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 
-//var spotifyHandler = require('./modules/spotifyHandler.js')
+var spotifyHandler = require('./modules/spotifyHandler.js')
 var db = require('./modules/pool.js');
 require('./modules/databaseSetup.js');
 var server = require('./modules/server.js')
-var musicStory = require('./modules/musicStoryHandler.js')
+//var musicStory = require('./modules/musicStoryHandler.js')
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }))

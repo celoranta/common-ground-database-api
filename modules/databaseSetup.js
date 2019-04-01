@@ -45,6 +45,8 @@ db.pool.query(
     if (error) throw error;
 }
 
+//Spotify
+
 db.pool.query(
     `
     CREATE TABLE IF NOT EXISTS SpotifyTokens (
@@ -60,6 +62,23 @@ db.pool.query(
     if (error) throw error;
 }
 
+
+//Music Story
+
+db.pool.query(
+    `
+    CREATE TABLE IF NOT EXISTS MusicStoryTokens (
+    id Int NOT NULL AUTO_INCREMENT,
+    token varchar(255) NOT NULL,
+    token_secret varchar(255) NOT NULL,
+    createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+    );
+    `
+), function (error, results, fields) {
+    if (error) throw error;
+}
 
 
 

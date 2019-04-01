@@ -36,7 +36,7 @@ function query(sql, args) {
     });
 };
 
-
+//Should Encrypt?
 let postDbToken = (token, expiresAt) => {
     query(
     `
@@ -60,13 +60,40 @@ let getDbToken = () => {
         resolve(rows);
       })
     })
-    };
+};
+
+//Should encrypt?
+let postMusicStoryToken = (token, tokenSecret) => {
+    query(
+        `
+        INSERT INTO MusicStoryTokens (token, token_secret)
+        VALUES ("` + token + `", "` + tokenSecret + `");`
+        )
+}
+
+let getMusicStoryToken = () => {
+    return new Promise((resolve, reject) => {
+        const sql =     `
+        SELECT token, token_secret
+        FROM MusicStoryTokens
+        WHERE createAt = (SELECT MAX(createAt) FROM MusicStoryTokens)
+        `
+    pool.query(sql, {}, (err, rows) => {
+        if (err)
+        return reject(err);
+        var data = JSON.stringify(rows)
+        console.log('Retrieved most recent Token from Music Story');
+        resolve(rows);
+      })
+    })
+};
 
 
 exports.postDbToken = postDbToken;
 exports.getDbToken = getDbToken;
 
-
+exports.postMusicStoryToken = postMusicStoryToken;
+exports.getMusicStoryToken = getMusicStoryToken;
 
 module.exports.query = query;
 module.exports.pool = pool;

@@ -140,7 +140,25 @@ function analyze(trackId) {
     )
 }
 
+function getPlaylist(playlistId) {
+    return new Promise(
+        (resolve, reject) => {
+            const endpoint = '/playlists/'
+            const uri = endpoint + playlistId;
+            apiCall(uri)
+            .then(result => {
+                resolve(result)
+
+            })
+            .catch(err => {
+                reject(err)
+            })
+        }
+    )
+}
+
 //analysis('4zXvB4MoQD8onk0NCZbeHG')
+getPlaylist('7Hrp9jGgpUHSsoARFTPpDN')
 exports.search = search
 exports.analyze = analyze
 exports.call = (endpoint) => {

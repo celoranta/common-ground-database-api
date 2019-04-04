@@ -88,86 +88,6 @@ let getMusicStoryToken = () => {
     })
 };
 
-//Oauth Server
-
-let saveServerAccessToken = (accessToken) => {
-pool.query(sql, {}, (err, rows)
-   `
-   INSERT INTO OauthServerAccessTokens (access_token, expires_at, scope, client_id, user_id)
-   VALUES ("` 
-   + accessToken.access_token + `", "` 
-   + accessToken.expiresAt + `", "`
-   + accessToken.scope + `", "`
-   + accessToken.client_id +`", "`
-   + accessToken.user.id + `");`
-)
-};
-
-let saveServerRefreshToken = (refreshToken) => {
-    pool.query(sql, {}, (err, rows)
-    `
-    INSERT INTO OauthServerRefrestTokens (access_token, expires_at, scope, client_id, user_id)
-    VALUES ("` 
-    + accessToken.refresh_token + `", "` 
-    + accessToken.expiresAt + `", "`
-    + accessToken.scope + `", "`
-    + accessToken.client_id +`", "`
-    + accessToken.user.id + `");`
- )
-};
-
-let queryAccessToken = (tokenObject) => {
-    return new Promise((resolve, reject) => {
-        const sql =     `
-        SELECT *
-        FROM OauthServerAccessTokens
-        WHERE access_token = ` + tokenObject.accessToken + `;`   
-    pool.query(sql, {}, (err, rows) => {
-        if (err)
-        return reject(err);
-        var data = JSON.stringify(rows)
-        console.log('Retrieved matching Token from Oauth table');
-        resolve(rows);
-      })
-    })
-};
-
-let queryClient = (clientParams) => {
-    return new Promise((resolve, reject) => {
-        const sql =     `
-        SELECT *
-        FROM OauthClients
-        WHERE id = ` + clientParams.clientId + `;`   
-        //I am supposed to involve the client secret here... somehow...
-    pool.query(sql, {}, (err, rows) => {
-        if (err)
-        return reject(err);
-        var data = JSON.stringify(rows)
-        console.log('Retrieved matching Client from Oauth Clients Table');
-        resolve(rows);
-      })
-    })
-};
-
-let queryUser = (clientIdObject)=> {
-let id = clientIdObject.id
-return new Promise((resolve, reject) => {
-    const sql =     
-    `
-    SELECT *
-    FROM OauthUsers
-    WHERE id = ` + clientParams.clientId + `;`   
-    //I am supposed to involve the client secret here... somehow...
-pool.query(sql, {}, (err, rows) => {
-    if (err)
-    return reject(err);
-    var data = JSON.stringify(rows)
-    console.log('Retrieved matching Client from Oauth Clients Table');
-    resolve(rows);
-  })
-})
-};
-
 
 exports.postDbToken = postDbToken;
 exports.getDbToken = getDbToken;
@@ -178,8 +98,3 @@ exports.getMusicStoryToken = getMusicStoryToken;
 module.exports.query = query;
 module.exports.pool = pool;
 
-module.exports.saveServerAccessToken = saveServerAccessToken;
-module.exports.saveServerRefreshToken = saveServerRefreshToken;
-module.exports.queryAccessToken = queryAccessToken;
-module.exports.queryClients = queryClient;
-module.exports.queryUser = queryUser;

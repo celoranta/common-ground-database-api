@@ -83,7 +83,7 @@ db.pool.query(
 
 
 
-//Oauth Server
+//Oauth Server // Kept for use with my own code
 
 db.pool.query(
 `
@@ -106,9 +106,6 @@ PRIMARY KEY(id)
 );
 `
 );
-
-
-
 
 db.pool.query(
 

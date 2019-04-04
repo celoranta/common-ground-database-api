@@ -82,16 +82,67 @@ db.pool.query(
 
 
 
-// db.pool.query(
-//     `
-//     INSERT INTO PersonNameTypes 
-//     VALUES (
-        
-//     )
-//     `
-// ), (error, results, fields) => {
-//     if (error) throw error;
-// }
+
+//Oauth Server
+
+db.pool.query(
+`
+CREATE TABLE IF NOT EXISTS OauthClients (
+id Int NOT NULL AUTO_INCREMENT,
+client_name varchar(255) NOT NULL,
+client_secret varchar(255) NOT NULL,
+client_website varchar(255),
+PRIMARY KEY(id)
+);
+`
+);
+
+db.pool.query(
+`
+CREATE TABLE IF NOT EXISTS OauthUsers (
+id Int NOT NULL AUTO_INCREMENT,
+user_name varchar(255) NOT NULL,
+PRIMARY KEY(id)
+);
+`
+);
+
+
+
+
+db.pool.query(
+
+    `
+CREATE TABLE IF NOT EXISTS OauthServerAccessTokens (
+id Int NOT NULL AUTO_INCREMENT,
+access_token varchar(255) NOT NULL,
+expires_at TIMESTAMP NOT NULL,
+scope varchar(255),
+client_id Int NOT NULL,
+user_id Int,
+PRIMARY KEY(id), 
+FOREIGN KEY(client_id) REFERENCES OauthClients(id),
+FOREIGN KEY(user_id) REFERENCES OauthUsers(id)
+);
+`
+);
+
+db.pool.query(
+`
+CREATE TABLE IF NOT EXISTS OauthServerRefreshTokens (
+id Int NOT NULL AUTO_INCREMENT,
+refresh_token varchar(255) NOT NULL,
+expires_at TIMESTAMP NOT NULL,
+scope varchar(255),
+client_id Int NOT NULL,
+user_id Int NOT NULL,
+PRIMARY KEY(id), 
+FOREIGN KEY(client_id) REFERENCES OauthClients(id),
+FOREIGN KEY(user_id) REFERENCES OauthUsers(id)
+);
+`
+);
+
 
 // connection.query(
 // `

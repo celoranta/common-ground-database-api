@@ -10,7 +10,8 @@ var path = require('path');
 var spotifyHandler = require('./modules/spotifyHandler.js')
 var db = require('./modules/pool.js');
 require('./modules/databaseSetup.js');
-var server = require('./modules/server.js')
+var server = require('./modules/server.js');
+var oauthServer = require('./modules/oauthServer.js');
 //var musicStory = require('./modules/musicStoryHandler.js')
 
 var app = express();

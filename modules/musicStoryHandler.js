@@ -35,7 +35,6 @@ function requestNewToken() {
     shaObj.update(rawSig);
     var sig = shaObj.getHMAC("B64");
     console.log("Base-64 encoded signature: " + sig);
-    //let sig2 = createSignature('GET', 'http://api.music-story.com/oauth/request_token', ['oauth_consumer_key=' + oauth_consumer_key])
     var tokenRequest = 'http://api.music-story.com/oauth/request_token?oauth_consumer_key=' + oauth_consumer_key + '&oauth_signature=' + sig;
     console.log("Complete HTTP request: " + tokenRequest);
     return new Promise(function (resolve, reject) {
@@ -54,7 +53,6 @@ function requestNewToken() {
 }
 
 function createSignature(method, endpoint, parameters) {
-
     parameters.sort();
     parameters = parameters.join("&")
     console.log('Raw parameters: ' + parameters)

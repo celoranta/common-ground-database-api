@@ -52,22 +52,31 @@ function validOrNewToken() {
         })
 }
 
+
+//This code fails if database table is empty
 var tokenPromise = db.getDbToken()
 tokenPromise
     .then(function (tokenJSONObjectArray) {
-        let tokenJSONObject = tokenJSONObjectArray[0] //Will we ever get multiple responses?
-        console.log('SQL returned token object: ' + JSON.stringify(tokenJSONObject))
-
-        console.log(tokenJSONObject.token)
-        sqlToken = tokenJSONObject.token;
-        sqlTokenExpiry = tokenJSONObject.expiresAt;
-        if (expirationDate < new Date(sqlTokenExpiry)) {
-            console.log('Token retrieved from SQL is newer.  Updating token and date vars.')
-            token = sqlToken
-            expirationDate = sqlTokenExpiry
+        if (tokenJSONObjectArray){
+            let tokenJSONObject = tokenJSONObjectArray[0] //Will we ever get multiple responses?
+            console.log('SQL returned token object: ' + JSON.stringify(tokenJSONObject))
+            console.log(tokenJSONObject.token)
+            sqlToken = tokenJSONObject.token;
+            sqlTokenExpiry = tokenJSONObject.expiresAt;
+            if (expirationDate < new Date(sqlTokenExpiry)) {
+                console.log('Token retrieved from SQL is newer.  Updating token and date vars.')
+                token = sqlToken
+                expirationDate = sqlTokenExpiry
+            }
         }
+        else{
+        console.log('No results from SQL.  Setting token vars to null')
+        token == null;
+        expirationDate == null;
+    }
         validOrNewToken()
     })
+
 
 async function apiCall(endpoint) {
     return new Promise(

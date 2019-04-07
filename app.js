@@ -1,16 +1,17 @@
 //LOOK AT https://www.terlici.com/2015/08/13/mysql-node-express.html
 
-var mysql = require('mysql2');
+var mysql = require('promise-mysql2');
 var env = require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
-var path = require('path');
+// var path = require('path');
 
 
 var spotifyHandler = require('./modules/spotifyHandler.js')
 var db = require('./modules/pool.js');
 require('./modules/databaseSetup.js');
-var server = require('./modules/server.js');
+require('./modules/server.js');
+require('./modules/oAuthServer.js');
 
 //var musicStory = require('./modules/musicStoryHandler.js')
 
@@ -21,35 +22,41 @@ app.use(bodyParser.urlencoded({ extended: true }))
 //MARK: Define API Endpoints
 //MARK: Posts
 
-app.post('/PersonNameTypes/:personNameType', (req, res, err) => {
+const failMsg = 'Database Query Failed.'
+
+app.post('/PersonNameTypes/:personNameType', (req, res) => {
   console.log('received value: ' + req.params.personNameType)
-  db.query(
+  let sql =
     `INSERT INTO PersonNameTypes (personNameTypeString) ` +
     `VALUES ('` +
     req.params.personNameType
     + `');`
-  )
-    .then(response => {
-      return res.send(response)
-    })
-    .catch(err)
-});
+  try {
+    db.pool.query(sql)
+      .then((result) => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg)
+  }
+})
 
-app.post('/Persons', (req, res, err) => {
-  console.log('received value: ' + req.params.personNameType)
-  db.query(
+app.post('/Persons', (req, res) => {
+  let sql =
     'INSERT INTO Persons () ' +
     'VALUES ();'
-  )
-    .then(response => {
-      return res.send(response)
-    })
-    .catch(err)
+  try {
+    db.pool.query(sql)
+      .then((result) => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg)
+  }
 });
 
-app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res, err) => {
-  console.log('received Values: ' + req.params.personNameString + ", " + req.params.personNameTypeId + ", " + req.params.personId)
-  db.query(
+app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res) => {
+  let sql =
     'INSERT INTO PersonNames (personNameString, personNameTypeId, personId) '
     + `VALUES ('`
     + req.params.personNameString
@@ -58,55 +65,75 @@ app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res
     + `', '`
     + req.params.personId
     + `');`
-  )
-    .then(response => {
-      return res.send(response)
-    })
-    .catch(err)
+  try {
+    db.pool.query(sql)
+      .then((result) => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg)
+  }
 });
 
 //MARK: Gets
-app.get('/PersonNameTypes', function (req, res, err) {
-  db.query('SELECT * FROM PersonNameTypes').then(rows => {
-    console.log(rows);
-    return res.send(rows)
-  })
-    .catch(err)
-});
-app.get('/PersonNames', function (req, res, err) {
-  db.query('SELECT * FROM PersonNames').then(rows => {
-    console.log(rows);
-    return res.send(rows)
-  })
-    .catch(err)
+app.get('/PersonNameTypes', function (req, res) {
+  let sql = 'SELECT * FROM PersonNameTypes'
+  try {
+    db.pool.query(sql)
+      .then((result) => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg);
+  }
 });
 
-app.get('/Persons', (req, res, err) => {
-  db.query('SELECT * FROM Persons')
-    .then(rows => {
-      console.log(rows);
-      return res.send(rows)
-    })
-    .catch(err)
+app.get('/PersonNames', function (req, res) {
+  let sql = 'SELECT * FROM PersonNames'
+  try {
+    let rows = db.pool.query(sql)
+      .then((result) => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg);
+  }
 });
 
-app.get('/PersonNamesList', (req, res, err) => {
-  db.query(
+app.get('/Persons', (req, res) => {
+  let sql = 'SELECT * FROM Persons'
+  try {
+    db.pool.query(sql)
+      .then((result) => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg);
+  }
+});
+
+app.get('/PersonNamesList', (req, res) => {
+  let sql =
     `
-SELECT PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString
+SELECT Persons.id, PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString
 FROM Persons
 INNER JOIN PersonNames
 ON PersonNames.PersonId=Persons.id
 INNER JOIN PersonNameTypes
-ON PersonNames.PersonNameTypeId=PersonNameTypes.id;
+ON PersonNames.PersonNameTypeId=PersonNameTypes.id
+;
+
 `
-  )
-    .then(rows => {
-      console.log(rows);
-      return res.send(rows)
-    })
-    .catch(err)
-})
+  try {
+    db.pool.query(sql)
+      .then(result => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg);
+  }
+});
+
 
 //Spotify API Calls
 app.get('/SpotifySearchTest/:query/:type', function (req, res, err) {
@@ -141,8 +168,8 @@ app.get('/login', function (req, res) {
 });
 
 app.get('/SpotifyUserAuthCallback/:code/:state', function (req, res) {
-console.log(req.params.code);
-console.log(req.params.state)
+  console.log(req.params.code);
+  console.log(req.params.state)
 })
 //MARK: Launch the Server
 app.listen(process.env.PORT, () => {

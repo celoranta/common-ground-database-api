@@ -47,23 +47,9 @@ app.use(express.static(publicFolder));
 //Tell express to use body parser and not parse extended bodies directly
 app.use(bodyparser.urlencoded({ extended: true }));
 
-//Custom Routing functions
-// function setCorsHeaders(res) {
-// res.header("Access-Control-Allow-Origin", '*');
-// res.header("Access-Control-Allow-Credentials", true);
-// res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-// res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-// return res;
-// }
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 app.get('/login', function(req, res) {
-  console.log(stateValue)
+  console.log('State Value: ' + stateValue)
   var scopes = 'user-read-private user-read-email';
   console.log('login attempted')
   res.redirect('https://accounts.spotify.com/authorize' +
@@ -90,7 +76,6 @@ else{
   res.redirect(process.env.BANDSITE);
 });
 
-
 // 404
 app.use(function (req, res, next) {
   return res.status(404).send({ message: 'Route ' + req.url + ' Not found.' });
@@ -102,4 +87,4 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(httpPort);
-console.log('html server is listening on port 8000');
+console.log('html server is listening on port' + httpPort);

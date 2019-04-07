@@ -14,6 +14,7 @@ db.pool.query(
     if (error) throw error;
 }
 
+//Need to make the combo of 'personId' and 'PersonNameTypeId' unique.  A single person cannot have two surnames.
 db.pool.query(
     `
     CREATE TABLE IF NOT EXISTS PersonNames (
@@ -25,9 +26,12 @@ db.pool.query(
     editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (personNameTypeId) REFERENCES PersonNameTypes(id),
-    FOREIGN KEY (personId) REFERENCES Persons(id)
+    FOREIGN KEY (personId) REFERENCES Persons(id),
+    UNIQUE KEY (personId, personNameTypeId)
     );
     `
+
+    
 ), function (error, results, fields) {
     if (error) throw error;
 }
@@ -83,29 +87,36 @@ db.pool.query(
 
 
 
-//Oauth Server // Kept for use with my own code
 
-db.pool.query(
-`
-CREATE TABLE IF NOT EXISTS OauthClients (
-id Int NOT NULL AUTO_INCREMENT,
-client_name varchar(255) NOT NULL,
-client_secret varchar(255) NOT NULL,
-client_website varchar(255),
-PRIMARY KEY(id)
-);
-`
-);
 
 db.pool.query(
 `
 CREATE TABLE IF NOT EXISTS OauthUsers (
 id Int NOT NULL AUTO_INCREMENT,
-user_name varchar(255) NOT NULL,
+user_name varchar(255) UNIQUE,
+password varchar(255) NOT NULL,
 PRIMARY KEY(id)
 );
 `
-);
+), function (error, results, fields) {
+    if (error) throw error;
+}
+
+//Oauth Server // Kept for use with my own code
+
+db.pool.query(
+    `
+    CREATE TABLE IF NOT EXISTS OauthClients (
+    id Int NOT NULL AUTO_INCREMENT,
+    client_name varchar(255) NOT NULL,
+    client_secret varchar(255) NOT NULL,
+    client_website varchar(255),
+    PRIMARY KEY(id)
+    );
+    `
+    ), function (error, results, fields) {
+        if (error) throw error;
+    }
 
 db.pool.query(
 
@@ -122,7 +133,9 @@ FOREIGN KEY(client_id) REFERENCES OauthClients(id),
 FOREIGN KEY(user_id) REFERENCES OauthUsers(id)
 );
 `
-);
+), function (error, results, fields) {
+    if (error) throw error;
+}
 
 db.pool.query(
 `
@@ -138,7 +151,9 @@ FOREIGN KEY(client_id) REFERENCES OauthClients(id),
 FOREIGN KEY(user_id) REFERENCES OauthUsers(id)
 );
 `
-);
+), function (error, results, fields) {
+    if (error) throw error;
+}
 
 
 // connection.query(

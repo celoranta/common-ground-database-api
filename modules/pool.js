@@ -1,4 +1,6 @@
-let mysql = require('mySql2');
+//let mysql = require('mySql2');
+let mysql = require('promise-mysql2')
+let bcrypt = require('bcrypt');
 
 
 //Create Database Connection
@@ -26,67 +28,113 @@ pool.getConnection((err, connection) => {
     return
 })
 
-function query(sql, args) {
-    return new Promise((resolve, reject) => {
-        pool.query(sql, args, (err, rows) => {
-            if (err)
-                return reject(err);
-            resolve(rows);
-        });
-    });
+async function query(sql, args) {
+    pool.query(sql, args)
+        .then((results) => { return results })
+        .catch((err) => {
+            console.log('Query Error: ' + err)
+            return err
+        })
 };
 
-//Should Encrypt?
+//Spotify Token Methods
+
 let postDbToken = (token, expiresAt) => {
     query(
-    `
+        `
     INSERT INTO SpotifyTokens (token, expiresAt)
     VALUES ("` + token + `", "` + expiresAt + `");`
     )
 }
 
-let getDbToken = () => {
-    return new Promise((resolve, reject) => {
-        const sql =     `
-        SELECT token, expiresAt
-        FROM SpotifyTokens
-        WHERE createAt = (SELECT MAX(createAt) FROM SpotifyTokens)
-        `
-    pool.query(sql, {}, (err, rows) => {
-        if (err)
-        return reject(err);
-        var data = JSON.stringify(rows)
-        console.log('Retrieved most recent Token from SQL');
-        resolve(rows);
-      })
-    })
+let getDbToken = async () => {
+    try {
+        return new Promise((resolve, reject) => {
+            const sql = `\n        SELECT token, expiresAt\n        FROM SpotifyTokens\n        WHERE createAt = (SELECT MAX(createAt) FROM SpotifyTokens)\n        `;
+            pool.query(sql, {}, (err, rows) => {
+                if (err) {
+                    return reject(err);
+                }
+                else if (rows.length == 0) {
+                    return reject(new Error('No existing tokens in database'));
+                }
+                else {
+                    var data = JSON.stringify(rows);
+                    console.log('Retrieved most recent Token from SQL: ' + data);
+                    resolve(rows);
+                }
+            });
+        });
+    }
+    catch (err_1) {
+        return err_1;
+    }
 };
 
-//Should encrypt?
 let postMusicStoryToken = (token, tokenSecret) => {
     query(
         `
         INSERT INTO MusicStoryTokens (token, token_secret)
         VALUES ("` + token + `", "` + tokenSecret + `");`
-        )
+    )
 }
+
+//Music Story Methods
 
 let getMusicStoryToken = () => {
     return new Promise((resolve, reject) => {
-        const sql =     `
+        const sql = `
         SELECT token, token_secret
         FROM MusicStoryTokens
         WHERE createAt = (SELECT MAX(createAt) FROM MusicStoryTokens)
         `
-    pool.query(sql, {}, (err, rows) => {
-        if (err)
-        return reject(err);
-        var data = JSON.stringify(rows)
-        console.log('Retrieved most recent Token from Music Story');
-        resolve(rows);
-      })
+        pool.query(sql, {}, (err, rows) => {
+            if (err)
+                return reject(err);
+            var data = JSON.stringify(rows)
+            console.log('Retrieved most recent Token from Music Story');
+            resolve(rows);
+        })
     })
 };
+
+//CommonGround Oauth Server
+
+let willHash = (stringToHash) => {
+    return new Promise((resolve, reject) => {
+        console.log('Hashing: ' + stringToHash)
+        bcrypt.hash(stringToHash, 10, (err, hash) => {
+            if (err) {
+                console.log('rejecting in willHash: ' + err)
+                reject(err)
+            }
+            else {
+                console.log('resolving willHash: ' + resolve)
+                resolve(hash)
+            }
+        })
+    })
+};
+
+async function createOauthUser(username, password) {
+    async function createUser(user, pass) {
+        let hash = await willHash(pass)
+        try {
+            let sql = `
+        INSERT INTO OauthUsers (user_name, password)
+        VALUES ("` + user + `", "` + hash + `");`
+            let result = await pool.query(sql)
+            console.log("Result of query: " + result)
+            return result
+        }
+        catch (err) {
+            console.log('User creation Error: ')
+            console.log(err)
+            return err
+        }
+    }
+    return await createUser(username, password)
+}
 
 
 exports.postDbToken = postDbToken;
@@ -97,4 +145,6 @@ exports.getMusicStoryToken = getMusicStoryToken;
 
 module.exports.query = query;
 module.exports.pool = pool;
+
+exports.createOauthUser = createOauthUser;
 

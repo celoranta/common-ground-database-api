@@ -14,7 +14,7 @@ db.pool.query(
     if (error) throw error;
 }
 
-//Need to make the combo of 'personId' and 'PersonNameTypeId' unique.  A single person cannot have two surnames.
+
 db.pool.query(
     `
     CREATE TABLE IF NOT EXISTS PersonNames (
@@ -30,8 +30,6 @@ db.pool.query(
     UNIQUE KEY (personId, personNameTypeId)
     );
     `
-
-    
 ), function (error, results, fields) {
     if (error) throw error;
 }
@@ -52,50 +50,48 @@ db.pool.query(
 //Spotify
 
 db.pool.query(
-    `
-    CREATE TABLE IF NOT EXISTS SpotifyTokens (
-    id Int NOT NULL AUTO_INCREMENT,
-    token varchar(255) NOT NULL,
-    expiresAt varchar(255) NOT NULL,
-    createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-    );
-    `
+`
+CREATE TABLE IF NOT EXISTS SpotifyTokens (
+id Int NOT NULL AUTO_INCREMENT,
+token varchar(255) NOT NULL,
+expiresAt varchar(255) NOT NULL,
+createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (id)
+);
+`
 ), function (error, results, fields) {
     if (error) throw error;
 }
-
 
 //Music Story
 
 db.pool.query(
-    `
-    CREATE TABLE IF NOT EXISTS MusicStoryTokens (
-    id Int NOT NULL AUTO_INCREMENT,
-    token varchar(255) NOT NULL,
-    token_secret varchar(255) NOT NULL,
-    createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-    );
-    `
+`
+CREATE TABLE IF NOT EXISTS MusicStoryTokens (
+id Int NOT NULL AUTO_INCREMENT,
+token varchar(255) NOT NULL,
+token_secret varchar(255) NOT NULL,
+createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (id)
+);
+`
 ), function (error, results, fields) {
     if (error) throw error;
 }
 
-
-
-
-
-
 db.pool.query(
-`
-CREATE TABLE IF NOT EXISTS OauthUsers (
+    `
+CREATE TABLE IF NOT EXISTS EmailAddresses (
 id Int NOT NULL AUTO_INCREMENT,
-user_name varchar(255) UNIQUE,
-password varchar(255) NOT NULL,
-PRIMARY KEY(id)
+email_address varchar(255) UNIQUE,
+personId Int,
+confirmed BOOL DEFAULT false,
+createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY(id),
+FOREIGN KEY (personId) REFERENCES Persons(id)
 );
 `
 ), function (error, results, fields) {
@@ -106,20 +102,41 @@ PRIMARY KEY(id)
 
 db.pool.query(
     `
-    CREATE TABLE IF NOT EXISTS OauthClients (
-    id Int NOT NULL AUTO_INCREMENT,
-    client_name varchar(255) NOT NULL,
-    client_secret varchar(255) NOT NULL,
-    client_website varchar(255),
-    PRIMARY KEY(id)
-    );
-    `
-    ), function (error, results, fields) {
-        if (error) throw error;
-    }
+CREATE TABLE IF NOT EXISTS OauthUsers (
+id Int NOT NULL AUTO_INCREMENT,
+user_name varchar(255) UNIQUE,
+password varchar(255) NOT NULL,
+personId Int NOT NULL,
+createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY(id),
+FOREIGN KEY (personId) REFERENCES Persons(id)
+);
+`
+), function (error, results, fields) {
+    if (error) throw error;
+}
+
 
 db.pool.query(
+`
+CREATE TABLE IF NOT EXISTS OauthClients (
+id Int NOT NULL AUTO_INCREMENT,
+client_name varchar(255) NOT NULL,
+client_secret varchar(255) NOT NULL,
+client_website varchar(255),
+client_owner_id Int NOT NULL,
+createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY(id),
+FOREIGN KEY (client_owner_id) REFERENCES OauthUsers(id)
+);
+`
+), function (error, results, fields) {
+    if (error) throw error;
+}
 
+db.pool.query(
     `
 CREATE TABLE IF NOT EXISTS OauthServerAccessTokens (
 id Int NOT NULL AUTO_INCREMENT,
@@ -128,6 +145,8 @@ expires_at TIMESTAMP NOT NULL,
 scope varchar(255),
 client_id Int NOT NULL,
 user_id Int,
+createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY(id), 
 FOREIGN KEY(client_id) REFERENCES OauthClients(id),
 FOREIGN KEY(user_id) REFERENCES OauthUsers(id)
@@ -138,7 +157,7 @@ FOREIGN KEY(user_id) REFERENCES OauthUsers(id)
 }
 
 db.pool.query(
-`
+    `
 CREATE TABLE IF NOT EXISTS OauthServerRefreshTokens (
 id Int NOT NULL AUTO_INCREMENT,
 refresh_token varchar(255) NOT NULL,
@@ -146,6 +165,8 @@ expires_at TIMESTAMP NOT NULL,
 scope varchar(255),
 client_id Int NOT NULL,
 user_id Int NOT NULL,
+createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+editedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY(id), 
 FOREIGN KEY(client_id) REFERENCES OauthClients(id),
 FOREIGN KEY(user_id) REFERENCES OauthUsers(id)

@@ -116,13 +116,16 @@ let willHash = (stringToHash) => {
     })
 };
 
-async function createOauthUser(username, password) {
-    async function createUser(user, pass) {
+async function createOauthUser(username, password, personId) {
+    async function createUser(user, pass, id) {
         let hash = await willHash(pass)
         try {
             let sql = `
-        INSERT INTO OauthUsers (user_name, password)
-        VALUES ("` + user + `", "` + hash + `");`
+        INSERT INTO OauthUsers (user_name, password, personId)
+        VALUES ("` 
+        + user + `", "` 
+        + hash + `", "` 
+        + id + `");`
             let result = await pool.query(sql)
             console.log("Result of query: " + result)
             return result
@@ -133,7 +136,7 @@ async function createOauthUser(username, password) {
             return err
         }
     }
-    return await createUser(username, password)
+    return await createUser(username, password, personId)
 }
 
 

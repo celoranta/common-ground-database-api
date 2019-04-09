@@ -5,9 +5,13 @@ const url = require('url');
 const express = require('express');
 const path = require('path');
 const bodyparser = require('body-parser');
+let bcrypt = require('bcrypt');
+const db = require('./pool.js');
 var cors = require('cors');
 require('dotenv').config();
 let spotifyUserHandler = require('./spotifyUserHandler.js')
+let saltrounds = 10;
+
 
 //Include custom frameworks
 
@@ -48,7 +52,7 @@ app.use(express.static(publicFolder));
 app.use(bodyparser.urlencoded({ extended: true }));
 
 
-app.get('/login', function(req, res) {
+app.get('/spotifyLogin', function(req, res) {
   console.log('State Value: ' + stateValue)
   var scopes = 'user-read-private user-read-email';
   console.log('login attempted')
@@ -60,7 +64,7 @@ app.get('/login', function(req, res) {
     '&state=' + encodeURIComponent(stateValue);
   });
 
-app.get('/callback', (req, res, err) => {
+app.get('/spotifyCallback', (req, res, err) => {
   var code = null;
   let codeObject = req.query;
   if (codeObject.hasOwnProperty("code")){
@@ -73,8 +77,58 @@ else if(codeObject.hasOwnProperty("error") ){
 else{
    let unknown = new Error('Oauth server response returned neither code nor error.')
 }
+//Temp redirect to band site
   res.redirect(process.env.BANDSITE);
 });
+
+//API User Login (Should be https?)
+app.post('/api/login', function(req, res) {
+  let email = req.body.email;
+  let password = req.body.password;
+  console.log('Recieved via HTTP: Email: ' + email +', Password: ' + password)
+  let sql = `
+  SELECT email_address, Persons.id AS personId, OauthUsers.password AS hash
+  FROM EmailAddresses
+  LEFT JOIN Persons ON EmailAddresses.personId=Persons.id
+  LEFT JOIN OauthUsers ON Persons.id=OauthUsers.personId
+  WHERE email_address='` + email + `';
+  `
+  console.log(sql)
+  try {
+  db.pool.query(sql)
+  .then((result) => {
+
+    console.log('SQL REsult: ' + JSON.stringify(result))
+    console.log('HTTP Request Password: ' + password)
+    let hash = result[0][0].hash
+    email_address = result[0][0].email_address;
+    console.log('Email: ' + email_address)
+    bcrypt.compare(password, hash).then(function(passRes) {
+      console.log('Result ' + passRes)
+      if(passRes){
+        res.send('Login Successful')
+      }
+      else(
+        res.send('Access Denied.')
+      )
+    // if (err){
+    //   console.log('Password check error')
+    //   res.send(err)
+    // }
+    // else{
+    //   console.log('password check successful?')
+    //   console.log(passcheck + passRes)
+    // res.send(passcheck + passRes)
+    // }
+  })
+})
+  .catch((error) => {res.send('Access Denied. ' + error)})
+  }
+  catch(error){
+    console.log('Login Error')
+    res.send(error)
+  }
+})
 
 // 404
 app.use(function (req, res, next) {

@@ -75,6 +75,26 @@ app.post('/PersonNames/:personNameString/:personNameTypeId/:personId', (req, res
   }
 });
 
+
+app.post('/EmailAddresses/:emailAddress/:personId', (req, res) => {
+  let email = req.params.emailAddress;
+  let personId = req.params.personId;
+  let sql = `INSERT INTO EmailAddresses (email_address, personId)
+  VALUES(
+  "`+ email + `",
+  `+ personId + 
+  `)`
+  try {
+    db.pool.query(sql)
+      .then(result => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg);
+  }
+});
+
+
 //MARK: Gets
 app.get('/PersonNameTypes', function (req, res) {
   let sql = 'SELECT * FROM PersonNameTypes'
@@ -112,15 +132,29 @@ app.get('/Persons', (req, res) => {
   }
 });
 
+app.get('/EmailAddresses', (req, res) => {
+  let sql = 'SELECT * FROM EmailAddresses'
+  try {
+    db.pool.query(sql)
+      .then((result) => { res.send(result) })
+      .catch((error) => { res.send(error) })
+  }
+  catch (error) {
+    res.send(failMsg);
+  }
+});
+
 app.get('/PersonNamesList', (req, res) => {
   let sql =
     `
-SELECT Persons.id, PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString
+SELECT Persons.id, PersonNameTypes.PersonNameTypeString ,PersonNames.PersonNameString ,EmailAddresses.email_address
 FROM Persons
-INNER JOIN PersonNames
+LEFT JOIN PersonNames
 ON PersonNames.PersonId=Persons.id
-INNER JOIN PersonNameTypes
+LEFT JOIN PersonNameTypes
 ON PersonNames.PersonNameTypeId=PersonNameTypes.id
+LEFT JOIN EmailAddresses
+ON EmailAddresses.personId=Persons.id
 ;
 
 `

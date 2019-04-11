@@ -100,11 +100,12 @@ FOREIGN KEY (personId) REFERENCES Persons(id)
 
 //Oauth Server // Kept for use with my own code
 
+//Should user_name not references PersonNameTypes.username?
 db.pool.query(
     `
 CREATE TABLE IF NOT EXISTS OauthUsers (
 id Int NOT NULL AUTO_INCREMENT,
-user_name varchar(255) UNIQUE,
+api_username varchar(255) NOT NULL UNIQUE,
 password varchar(255) NOT NULL,
 personId Int NOT NULL UNIQUE,
 createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

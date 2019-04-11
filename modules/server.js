@@ -2,7 +2,9 @@
 //Include frameworks
 const fs = require('fs');
 const url = require('url');
-const express = require('express');
+var express = require('express'),
+    app = express(),
+    session = require('express-session');
 const path = require('path');
 const bodyparser = require('body-parser');
 let bcrypt = require('bcrypt');
@@ -12,6 +14,49 @@ require('dotenv').config();
 let spotifyUserHandler = require('./spotifyUserHandler.js')
 let saltrounds = 10;
 
+
+/*------------------------------------------------------*/
+
+//https://www.codexpedia.com/node-js/a-very-basic-session-auth-in-node-js-with-express-js/
+
+
+app.use(session({
+    secret: process.env.API_SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+}));
+ 
+// Authentication and Authorization Middleware
+var auth = function(req, res, next) {
+  if (req.session && req.session.role === "user" && req.session.admin)
+    return next();
+  else
+    return res.sendStatus(401);
+};
+ 
+// Login endpoint
+// app.get('/login', function (req, res) {
+//   if (!req.query.username || !req.query.password) {
+//     res.send('login failed');    
+//   } else if(req.query.username === "amy" || req.query.password === "amyspassword") {
+//     req.session.user = "amy";
+//     req.session.admin = true;
+//     res.send("login success!");
+//   }
+// });
+ 
+// Logout endpoint
+app.get('/logout', function (req, res) {
+  req.session.destroy();
+  res.send("logout success!");
+});
+ 
+// Get content endpoint
+app.get('/content', auth, function (req, res) {
+    res.send("You can only see this after you've logged in.");
+});
+
+/*--------------------------------------------------- */
 
 //Include custom frameworks
 
@@ -29,7 +74,7 @@ function create_UUID(){
 }
 
 //Instantiate managers
-var app = express();
+//var app = express();
 var httpPort = 8000;
 const stateValue = create_UUID();
 
@@ -43,14 +88,13 @@ var corsOptions = {
 
 //Create filepaths
 var publicFolder = path.join(__dirname + '/public');
-var callback = path.join(__dirname + '/public/callback.html');
+//var callback = path.join(__dirname + '/public/callback.html');
 
 //Static Routes
 app.use(express.static(publicFolder));
 
 //Tell express to use body parser and not parse extended bodies directly
 app.use(bodyparser.urlencoded({ extended: true }));
-
 
 app.get('/spotifyLogin', function(req, res) {
   console.log('State Value: ' + stateValue)
@@ -81,10 +125,8 @@ else{
   res.redirect(process.env.BANDSITE);
 });
 
-
 //API User Login (Should be https?)
 app.get('/api/login', function(req, res) {
-  console.log('login endpoint reached')
   fs.readFile('./public/login.html', function(err, data) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);
@@ -92,24 +134,30 @@ app.get('/api/login', function(req, res) {
   });
 })
 
-
 app.post('/api/login', function(req, res) {
-  let email = req.body.email;
+  //let email = req.body.email;
   let password = req.body.password;
+  let username = req.body.username;
+  console.log('Endpoint received: ' + password + "; " + username)
   let sql = `
-  SELECT email_address, Persons.id AS personId, OauthUsers.password AS hash
+  SELECT api_username, email_address, Persons.id AS personId, OauthUsers.password AS hash
   FROM EmailAddresses
   LEFT JOIN Persons ON EmailAddresses.personId=Persons.id
   LEFT JOIN OauthUsers ON Persons.id=OauthUsers.personId
-  WHERE email_address='` + email + `';
+  WHERE api_username='` + username + `';
   `
   try {
   db.pool.query(sql)
   .then((result) => {
-    let hash = result[0][0].hash
-    email_address = result[0][0].email_address;
+    let userData = result[0][0];
+    let hash = userData.hash
+   console.log('User Data: ' + JSON.stringify(userData))
+    //let email_address = userData.email_address;
+    let userId = userData.id;
     bcrypt.compare(password, hash).then(function(passRes) {
       if(passRes){
+        req.session.user = userId;
+        req.session.role = "user";
         res.send('Login Successful')
       }
       else(

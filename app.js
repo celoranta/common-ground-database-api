@@ -12,6 +12,8 @@ var db = require('./modules/pool.js');
 require('./modules/databaseSetup.js');
 require('./modules/server.js');
 require('./modules/oAuthServer.js');
+require('./modules/server2.js');
+
 
 //var musicStory = require('./modules/musicStoryHandler.js')
 

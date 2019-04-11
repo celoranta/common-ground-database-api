@@ -81,11 +81,21 @@ else{
   res.redirect(process.env.BANDSITE);
 });
 
+
 //API User Login (Should be https?)
+app.get('/api/login', function(req, res) {
+  console.log('login endpoint reached')
+  fs.readFile('./public/login.html', function(err, data) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    res.end();
+  });
+})
+
+
 app.post('/api/login', function(req, res) {
   let email = req.body.email;
   let password = req.body.password;
-  console.log('Recieved via HTTP: Email: ' + email +', Password: ' + password)
   let sql = `
   SELECT email_address, Persons.id AS personId, OauthUsers.password AS hash
   FROM EmailAddresses
@@ -93,34 +103,20 @@ app.post('/api/login', function(req, res) {
   LEFT JOIN OauthUsers ON Persons.id=OauthUsers.personId
   WHERE email_address='` + email + `';
   `
-  console.log(sql)
   try {
   db.pool.query(sql)
   .then((result) => {
-
-    console.log('SQL REsult: ' + JSON.stringify(result))
-    console.log('HTTP Request Password: ' + password)
     let hash = result[0][0].hash
     email_address = result[0][0].email_address;
-    console.log('Email: ' + email_address)
     bcrypt.compare(password, hash).then(function(passRes) {
-      console.log('Result ' + passRes)
       if(passRes){
         res.send('Login Successful')
       }
       else(
         res.send('Access Denied.')
       )
-    // if (err){
-    //   console.log('Password check error')
-    //   res.send(err)
-    // }
-    // else{
-    //   console.log('password check successful?')
-    //   console.log(passcheck + passRes)
-    // res.send(passcheck + passRes)
-    // }
   })
+  .catch((error) => {res.send('Access Denied. ' + error)})
 })
   .catch((error) => {res.send('Access Denied. ' + error)})
   }

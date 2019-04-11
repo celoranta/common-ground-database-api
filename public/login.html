@@ -1,0 +1,149 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <title>Login</title>
+  <meta name="description" content="CommonGround API Login">
+  <meta name="author" content="SitePoint">
+  <!-- <script src="/modules/apiLogin.js"></script> -->
+</head>
+
+<style>
+  /* Bordered form */
+  form {
+    border: 3px solid #f1f1f1;
+  }
+
+  /* Full-width inputs */
+  input[type=text],
+  input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 7px 7px 7px 7px; 
+  }
+
+  /* body {
+ background-image: url("concert.jpg");
+ background-color: #cccccc;
+} */
+
+  /* Set a style for all buttons */
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 7px 7px 7px 7px; 
+  }
+
+
+  /* Add a hover effect for buttons */
+  button:hover {
+    opacity: 0.8;
+  }
+
+
+  /*Added by CLE*/
+  .half-size {
+    text-align: center;
+    margin: auto;
+    width: 35%;
+    min-width: 315px;
+  }
+
+  /* Extra style for the cancel button (red) */
+  .cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+  }
+
+  /* Center the avatar image inside this container */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+  }
+
+  /* Avatar image */
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+
+  /* Add padding to containers */
+  .container {
+    padding: 16px;
+  }
+
+  /* The "Forgot password" text */
+  span.psw {
+    float: right;
+    padding-top: 16px;
+  }
+
+  /* Change styles for span and cancel button on extra small screens */
+  @media screen and (max-width: 300px) {
+    span.psw {
+      display: block;
+      float: none;
+    }
+
+    .cancelbtn {
+      width: 100%;
+    }
+  }
+</style>
+
+
+<!-- Button to open the modal login form -->
+<!-- <button onclick="document.getElementById('id01').style.display='block'">Login</button> -->
+
+<!-- The Modal -->
+<div class="half-size container">
+  <div id="id01" class="modal">
+    <!-- <span onclick="document.getElementById('id01').style.display='none'" class="close"
+      title="Close Modal">&times;</span> -->
+    <!-- Modal Content -->
+    <!-- <form class="modal-content animate" action="/action_page.php"> -->
+      <!-- <div class="imgcontainer">
+      <img src="img_avatar2.png" alt="Avatar" class="avatar">
+    </div> -->
+      <div class="container" >
+  <form action="/api/login" method="post">
+        <label id="uname-label" for="uname"><b>Username</b></label>
+        <input id="uname" type="text" placeholder="Enter Username" name="email" required>
+        <label id="psw-label" for="psw"><b>Password</b></label>
+        <input id="psw" type="password" placeholder="Enter Password" name="password" required>
+        <button type="submit">Login</button>
+        </form>
+        <label> 
+          <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+        <label>
+            <button type="button" style="background-color: #0066FF">Sign Up</button>
+        </label>
+      </div>
+      <div class="container" style="background-color:#f1f1f1">
+        <button type="button" ; 
+          class="cancelbtn">Cancel</button>
+        <div>Forgot <a href="#">password?</a></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body>
+
+
+</html>

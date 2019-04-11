@@ -102,7 +102,7 @@ app.get('/PersonNameTypes', function (req, res) {
   let sql = 'SELECT * FROM PersonNameTypes'
   try {
     db.pool.query(sql)
-      .then((result) => { res.send(result) })
+      .then((result) => { res.send(db.getSqlData(result)) })
       .catch((error) => { res.send(error) })
   }
   catch (error) {
@@ -114,7 +114,7 @@ app.get('/PersonNames', function (req, res) {
   let sql = 'SELECT * FROM PersonNames'
   try {
     let rows = db.pool.query(sql)
-      .then((result) => { res.send(result) })
+      .then((result) => { res.send(db.getSqlData(result)) })
       .catch((error) => { res.send(error) })
   }
   catch (error) {
@@ -126,7 +126,7 @@ app.get('/Persons', (req, res) => {
   let sql = 'SELECT * FROM Persons'
   try {
     db.pool.query(sql)
-      .then((result) => { res.send(result) })
+      .then((result) => { res.send(db.getSqlData(result)) })
       .catch((error) => { res.send(error) })
   }
   catch (error) {
@@ -138,7 +138,7 @@ app.get('/EmailAddresses', (req, res) => {
   let sql = 'SELECT * FROM EmailAddresses'
   try {
     db.pool.query(sql)
-      .then((result) => { res.send(result) })
+      .then((result) => { res.send(db.getSqlData(result)) })
       .catch((error) => { res.send(error) })
   }
   catch (error) {
@@ -162,7 +162,7 @@ ON EmailAddresses.personId=Persons.id
 `
   try {
     db.pool.query(sql)
-      .then(result => { res.send(result) })
+      .then(result => { res.send(db.getSqlData(result)) })
       .catch((error) => { res.send(error) })
   }
   catch (error) {

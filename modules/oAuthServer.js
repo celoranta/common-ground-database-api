@@ -21,7 +21,7 @@ var httpPort = process.env.OAUTH_PORT;
 
 
 //This is the endpoint to create an api user, who would subsequently receive authorization
-//to connect their website or app to the commonground API.
+//to connect their website or app to the commonground API. 
 app.post('/api/user', function (req, res, err) {
     //console.log('Put_User endpoint reached.')
     let email = req.body.email;
@@ -89,7 +89,7 @@ ON OauthUsers.personId=Persons.id
 ;`
     try {
       db.pool.query(sql)
-        .then((result) => { res.send(result) })
+        .then((result) => { res.send(db.getSqlData(result)) })
         .catch((error) => { res.send(error) })
     }
     catch (error) {

@@ -7,6 +7,7 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const errorHandler = require('modules/helpers/error-handler.js');
+//const env = require('dotenv');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

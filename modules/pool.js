@@ -139,6 +139,12 @@ async function createOauthUser(username, password, personId) {
     return await createUser(username, password, personId)
 }
 
+function getSqlData(response){
+    return (response[0]);
+};
+
+
+exports.getSqlData = getSqlData;
 
 exports.postDbToken = postDbToken;
 exports.getDbToken = getDbToken;

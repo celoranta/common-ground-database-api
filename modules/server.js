@@ -137,4 +137,4 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(httpPort);
-console.log('html server is listening on port' + httpPort);
+console.log('html server is listening on port ' + httpPort);

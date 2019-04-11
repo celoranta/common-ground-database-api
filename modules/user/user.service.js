@@ -1,9 +1,12 @@
 const config = require('config.json');
 const jwt = require('jsonwebtoken');
 const Role = require('modules/helpers/role.js');
+//const db = require('modules/pool.js');
+
 
 // users hardcoded for simplicity, store in a db for production applications
-const users = [
+const users =
+[
     { id: 1, username: 'chriseloranta@gmail.com', password: 'heyya', firstName: 'Admin', lastName: 'User', role: Role.Admin },
     { id: 2, username: 'user', password: 'user', firstName: 'Normal', lastName: 'User', role: Role.User }
 ];
@@ -13,7 +16,6 @@ module.exports = {
     getAll,
     getById
 };
-
 
 async function authenticate({ username, password }) {
     const user = users.find(u => u.username === username && u.password === password);

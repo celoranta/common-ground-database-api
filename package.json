@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "ajax": "0.0.4",
+    "app-root-path": "^2.2.1",
     "axios": "^0.18.0",
     "base-64": "^0.1.0",
     "bcrypt": "^3.0.5",

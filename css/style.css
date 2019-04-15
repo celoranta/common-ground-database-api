@@ -1,0 +1,20 @@
+:root {
+    --standard-font: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif";
+
+    --background-color-main: rgb(37, 37, 37);
+    --text-color-main: rgb(228, 225, 225);
+}
+    body {
+    background-color: var(--background-color-main);
+    font-family: var(--standard-font);
+}
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color-main);
+    font-family: var(--standard-font);
+}
+
+p {
+    font-family: var(--standard-font);
+    color: var(--text-color-main);
+
+}

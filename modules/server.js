@@ -3,22 +3,17 @@
 const fs = require('fs');
 const url = require('url');
 var express = require('express'),
-    app = express(),
-    session = require('express-session');
+app = express(),
+session = require('express-session');
 const path = require('path');
 const bodyparser = require('body-parser');
 let bcrypt = require('bcrypt');
 const db = require('./pool.js');
 var cors = require('cors');
 require('dotenv').config();
-let spotifyUserHandler = require('./spotifyUserHandler.js')
+let spotifyUserHandler = require('./spotifyUserHandler.js');
 let saltrounds = 10;
-
-
-/*------------------------------------------------------*/
-
-//https://www.codexpedia.com/node-js/a-very-basic-session-auth-in-node-js-with-express-js/
-
+let role = require('../modules/helpers/role.js');
 
 app.use(session({
     secret: process.env.API_SESSION_SECRET,
@@ -28,22 +23,11 @@ app.use(session({
  
 // Authentication and Authorization Middleware
 var auth = function(req, res, next) {
-  if (req.session && req.session.role === "user" && req.session.admin)
+  if (req.session && req.session.role === role.User)
     return next();
   else
     return res.sendStatus(401);
 };
- 
-// Login endpoint
-// app.get('/login', function (req, res) {
-//   if (!req.query.username || !req.query.password) {
-//     res.send('login failed');    
-//   } else if(req.query.username === "amy" || req.query.password === "amyspassword") {
-//     req.session.user = "amy";
-//     req.session.admin = true;
-//     res.send("login success!");
-//   }
-// });
  
 // Logout endpoint
 app.get('/logout', function (req, res) {
@@ -56,13 +40,11 @@ app.get('/content', auth, function (req, res) {
     res.send("You can only see this after you've logged in.");
 });
 
-/*--------------------------------------------------- */
+// // api routes
+app.use('/api', auth, require('../modules/api/api.controller.js'));
+
 
 //Include custom frameworks
-
-//Assign constants
-const hostname = process.env.HOST;
-
 function create_UUID(){
   var dt = new Date().getTime();
   var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -73,8 +55,6 @@ function create_UUID(){
   return uuid;
 }
 
-//Instantiate managers
-//var app = express();
 var httpPort = 8000;
 const stateValue = create_UUID();
 
@@ -91,7 +71,8 @@ var publicFolder = path.join(__dirname + '/public');
 //var callback = path.join(__dirname + '/public/callback.html');
 
 //Static Routes
-app.use(express.static(publicFolder));
+// app.use(express.static(publicFolder));
+app.use('/public', express.static(__dirname + '/public'));
 
 //Tell express to use body parser and not parse extended bodies directly
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -126,7 +107,7 @@ else{
 });
 
 //API User Login (Should be https?)
-app.get('/api/login', function(req, res) {
+app.get('/login', function(req, res) {
   fs.readFile('./public/login.html', function(err, data) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);
@@ -134,7 +115,7 @@ app.get('/api/login', function(req, res) {
   });
 })
 
-app.post('/api/login', function(req, res) {
+app.post('/login', function(req, res) {
   //let email = req.body.email;
   let password = req.body.password;
   let username = req.body.username;
@@ -151,17 +132,18 @@ app.post('/api/login', function(req, res) {
   .then((result) => {
     let userData = result[0][0];
     let hash = userData.hash
-   console.log('User Data: ' + JSON.stringify(userData))
+   //console.log('User Data: ' + JSON.stringify(userData))
     //let email_address = userData.email_address;
-    let userId = userData.id;
+    //let userId = userData.id;
+    let api_username = userData.api_username;
     bcrypt.compare(password, hash).then(function(passRes) {
       if(passRes){
-        req.session.user = userId;
-        req.session.role = "user";
-        res.send('Login Successful')
+        req.session.user = api_username;
+        req.session.role = role.User;
+        res.redirect('/api')
       }
       else(
-        res.send('Access Denied.')
+        res.redirect('/login')
       )
   })
   .catch((error) => {res.send('Access Denied. ' + error)})
@@ -173,6 +155,25 @@ app.post('/api/login', function(req, res) {
     res.send(error)
   }
 })
+
+//API User Login (Should be https?)
+app.get('/public/menuContent.js', function(req, res) {
+  fs.readFile('./public/menuContent.js', function(err, data) {
+    if (err) {return err}
+    res.writeHead(200, {'Content-Type': 'text/javascript'});
+    res.write(data);
+    res.end();
+  });
+})
+app.get('/public/apps.js', function(req, res) {
+  fs.readFile('./public/apps.js', function(err, data) {
+    if (err) {return err}
+    res.writeHead(200, {'Content-Type': 'text/javascript'});
+    res.write(data);
+    res.end();
+  });
+})
+
 
 // 404
 app.use(function (req, res, next) {

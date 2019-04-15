@@ -1,0 +1,312 @@
+/*Overide Carousel Aspect Ratio*/
+.img {
+    object-fit: cover;
+    overflow: hidden;
+        }
+
+        .w3-bar {
+            z-index: 500 !important;
+        }
+
+/* .container {
+    margin: 0.75em auto;
+    overflow: hidden;
+    height: 5vh;
+} */
+
+.song-container {
+    overflow: hidden;
+    margin-top: 0;
+}
+
+.songs-lists {
+    padding-top: 0;
+}
+
+.song-swimlane{
+    overflow: hidden;
+}
+
+.genre-header {
+    margin-top: 1vh;
+    margin-bottom: 0;
+    text-transform: capitalize;
+    text-decoration: underline;
+    text-emphasis: strong;
+}
+
+.mySlides {
+    position: relative;
+    width: 100%;
+    padding-bottom: 5%;
+}
+/*Override pause when hovering*/
+.marquee:hover {
+    animation-play-state: running;
+}
+
+/* Override space at the top of scrolling area */
+@keyframes marquee {
+    0%   { top:   0em }
+    100% { top: -19em }
+}
+
+/*replace the above with this:
+http://jsfiddle.net/roine/TCJT4/
+http://jsfiddle.net/etj74mnh/
+*/
+
+.default-position{
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+
+.slider{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+    margin:0;
+}
+
+.slider-edge{
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    display:block;
+    content:'';
+    background:linear-gradient( rgba(255,0,0,0), rgba(255,0,0,0), white); 
+    z-index:100;
+}
+
+.slider-list .slider-ul{
+    position:relative;
+    overflow:hidden;
+    height:50%;
+    margin:0;
+
+    overflow:hidden;
+    /* height:150%; */
+    margin:0;
+    padding-left: 0;
+    padding-inline-start: 0px !important;
+}
+
+.float-center {        
+    margin-left:auto;
+    margin-right:auto;
+    display: table;
+  }
+
+.slideContainer {
+    overflow: hidden;
+}
+
+.songlist-container {
+    overflow: hidden;
+
+    text-align: center;
+    position: relative;
+}
+
+.fader {
+    background-image: linear-gradient(white, rgba(255,255,255,0));
+    z-index: 0.5;
+    position: absolute;
+    height: 1em;
+    width: 100%;
+    top: 0px;
+}
+
+.bottom-fader {
+    background-image: linear-gradient(rgba(255,255,255,0), white);
+    z-index: 0.5;
+    position: absolute;
+    height: 1em;
+    width: 100%;
+    bottom: -1px;
+}
+
+.genre-song-marquee {
+    overflow: hidden;
+    height: 10em;
+}
+
+.genre-song-swimlane {
+    overflow: hidden;
+    height: 30em;
+}
+
+.minor-marquee {
+    padding-bottom: 0.5em;
+}
+
+.slider{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+    margin:0;
+    background-color:rgb(209,206,255);
+    text-align: center;
+    vertical-align: center;
+}
+
+.edge{
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    position:absolute;
+    width:100%;
+    display:block;
+}
+
+.slideContainer{
+    padding-left: 0;
+    padding-inline-start: 0px !important;
+}
+
+.slider-list-item {
+    list-style:none;
+    display:block;
+    padding:0.25vh 0px;
+    text-align: center;
+}
+
+/* Container holding the image and the text */
+.float-text-container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+/* Bottom left text */
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+/* Top left text */
+.top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+/* Bottom right text */
+.bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.custom-greyscale {
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
+
+  .transport-button {
+    border-style: solid; 
+    border-color: white; 
+    border-width:thin
+  }
+
+  .pulse-size {
+    animation: attention 5s ease infinite;
+  }
+  
+  @keyframes attention {
+    5.5% {
+      transform: none;
+    }
+    6% {
+      transform: scale(1.05);
+    }
+    8% {
+      transform: scale(0.95);
+    }
+    10% {
+      transform: scale(1.03);
+    }
+    12% {
+      transform: scale(1);
+    }
+    /* 25% {
+      transform: rotate(-720deg);
+    } */
+    75% {
+        transform: none;
+    }
+}
+
+@-webkit-keyframes attention {
+    5.5% { 
+    -webkit-transform: none; 
+    }
+    6% { 
+    -webkit-transform: scale(1.05);  
+    }
+    8% { 
+    -webkit-transform: scale(0.95);  
+    }
+    10% { 
+    -webkit-transform: scale(1.03); 
+    }
+    12% { 
+    -webkit-transform: scale(1); 
+    }
+    /* 25% { 
+    -webkit-transform: rotate(-720deg); 
+    } */
+    75% { 
+    -webkit-transform: none;
+    }
+  
+  }
+
+
+
+#top-container{
+    position: relative;
+}
+  #splash-video {
+    position: absolute;
+    z-index: 100
+  }
+  #content-container{
+    position: absolute;
+    width: 100%
+  }
+
+  /* carousel */
+  body {font-family: "Lato", sans-serif}
+  .mySlides {display: none}
+
+  .hide-during-splash {
+      display: none
+  }
+
+  .hide-during-video {
+    display: none
+}

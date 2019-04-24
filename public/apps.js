@@ -1,7 +1,13 @@
 const shownAppList = [
-    { name: "commongroundband.ca" },
-    { name: "commonGroundiOS" },
-    { name: "maestro-pi" }
+    { name: "commongroundband.ca",
+    client_id: "as;jkbhvflkdj",
+client_secret: "asdfasd" },
+    { name: "commonGroundiOS",
+         client_id: "as;flkdj",
+    client_secret: "asdfasd" },
+    { name: "maestro-pi",
+        client_id: "akjhvdj",
+    client_secret: "asdfasd" }, 
 ];
 
 function constructAppTile(app) {
@@ -25,6 +31,12 @@ function constructAppTile(app) {
     var venueString = app.name
     nameBlock.innerHTML = venueString.bold();
 
+    var clientIdBlock = document.createElement('p');
+    clientIdBlock.innerHTML = "Client ID: \n" + app.client_id;
+
+    var clientSecretBlock = document.createElement('p');
+    clientSecretBlock.innerHTML = "Client Secret: \n" + app.client_secret;
+
     // var buttonDiv = document.createElement('button');
     // buttonDiv.setAttribute('class', 'w3-button');
     // buttonDiv.className += " w3-black";
@@ -33,7 +45,9 @@ function constructAppTile(app) {
     // buttonDiv.innerHTML = 'App Config';
 
     //nest divs
-    subWrapperDiv.appendChild(nameBlock);
+    subWrapperDiv.appendChild(nameBlock,);
+    subWrapperDiv.appendChild(clientIdBlock,);
+    subWrapperDiv.appendChild(clientSecretBlock,);
     //    subWrapperDiv.appendChild(buttonDiv);
     mainWrapperDiv.appendChild(subWrapperDiv);
     return mainWrapperDiv;

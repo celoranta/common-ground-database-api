@@ -3,10 +3,12 @@ const router = express.Router();
 const fs = require('fs');
 var appRoot = require('app-root-path');
 
+
 router.get('/', (req, res) => {
 res.redirect('/api/dashboard')
 })
 router.get('/dashboard', (req, res) => {
+   // console.log(res.session)
     console.log('Launch the dashboard')
     fs.readFile(appRoot + '/private/apiDashboard.html', function(err, data) {
         res.writeHead(200, {'Content-Type': 'text/html'});

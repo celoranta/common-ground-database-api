@@ -22,6 +22,7 @@
     "express-mysql-session": "^2.1.0",
     "express-oauth-server": "^2.0.0",
     "form-urlencoded": "^3.0.0",
+    "jimp": "^0.6.4",
     "jsonwebtoken": "^8.5.1",
     "jssha": "^2.3.1",
     "mysql-promise": "^5.0.0",

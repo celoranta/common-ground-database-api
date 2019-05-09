@@ -1,15 +1,17 @@
 const B2 = require('backblaze-b2');
 require('dotenv');
 var fs = require('fs');
+var path = require('path');
+const Jimp = require('jimp');
 
-
-//var FileSaver = require('file-saver');
-//var Blob = require('blob');
 
 var authToken = null;
 var downloadUrl = null;
 var apiUrl = null;
 var auth = null;
+
+const bucket = 'commonGroundImages';
+const b2_fileName = 'bradchris3.jpg'; 
 
 const b2 = new B2({
     accountId: process.env.B2_ACCOUNT_ID, // applicationKeyID or accountId
@@ -18,10 +20,8 @@ const b2 = new B2({
   
   authorize()
   .then(
-   downloadFileByName('commonGroundImages','band1.jpg' )
+   downloadFileByName(bucket, b2_fileName)
   );
-
-  
 
 
 //  var b = new Blob(['hi', 'constructing', 'a', 'blob']);
@@ -64,9 +64,29 @@ let data = await b2.downloadFileByName({
 })
 //console.log(data.data)
 //FileSaver.saveAs(data.data, "./test.jpg");
-fs.writeFile('mynewfile3.jpg', data.data, function (err) {
+let b2_filename = path.basename(data.config.url)
+fs.writeFile(b2_filename, data.data, function (err) {
   if (err) throw err;
+
+
+  Jimp.read(b2_filename)
+  .then(image=> {
+    return image
+      // .resize(256, 256) // resize
+      // .quality(60) // set JPEG quality
+      // .greyscale() // set greyscale
+      .crop(100, 190, 500, 400)
+      .write(b2_filename +'_edit.jpg'); // save
+  })
+  .catch(err => {
+    console.error(err);
+  });
+  const stats = fs.statSync("" + b2_filename + "_edit.jpg");
+  const fileSizeInBytes = stats.size;
+  //Convert the file size to megabytes (optional)
+  const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
   console.log('Saved!');
+  console.log('File size: ', fileSizeInMegabytes, "MB")
 });
 
 };

@@ -5,6 +5,7 @@ const url = require('url');
 var express = require('express'),
 app = express(),
 session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const bodyparser = require('body-parser');
 let bcrypt = require('bcrypt');
@@ -12,14 +13,39 @@ const db = require('./pool.js');
 var cors = require('cors');
 require('dotenv').config();
 let spotifyUserHandler = require('./spotifyUserHandler.js');
-let saltrounds = 10;
+//let saltrounds = 10;
 let role = require('../modules/helpers/role.js');
+let b2 = require('./backblazeHandler.js');
 
-app.use(session({
+let sessionOptions = {
     secret: process.env.API_SESSION_SECRET,
     resave: true,
     saveUninitialized: true
-}));
+}
+
+
+//Use existing session connection pool:
+
+/*
+var mysql = require('mysql');
+var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
+ 
+var options = {
+    host: 'localhost',
+    port: 3306,
+    user: 'db_user',
+    password: 'password',
+    database: 'db_name'
+};
+ 
+var connection = mysql.createConnection(options); // or mysql.createPool(options);
+var sessionStore = new MySQLStore({}<session store options>, connection);
+*/ 
+
+let thisSession = session(sessionOptions);
+
+app.use(thisSession);
  
 // Authentication and Authorization Middleware
 var auth = function(req, res, next) {

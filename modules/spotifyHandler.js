@@ -50,6 +50,14 @@ function validOrNewToken() {
                 resolve(token)
             }
         })
+        .catch(err =>{
+        {
+            console.log("Connection to Spotify server could not be established.");
+            console.log("Error: " + err);
+            reject(err);
+        }
+        }
+        )
 }
 
 
